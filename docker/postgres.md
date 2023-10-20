@@ -5,13 +5,13 @@
 ### Powershell command
 ```
 docker run `
---name postgres-local `
+--name postgres `
 --restart always `
 -e POSTGRES_USER=admin `
 -e POSTGRES_PASSWORD=String1@ `
 -e POSTGRES_DB=postgres `
 -p 5433:5432 `
--v C:/ProgramData/docker-volumes/postgres-local:/var/lib/postgresql/data `
+-v C:/ProgramData/docker-volumes/postgres:/var/lib/postgresql/data `
 -d postgres:16
 ```
 
@@ -22,12 +22,12 @@ docker run `
 ### Powershell command
 ```
 docker run `
---name pgadmin-local `
+--name pgadmin `
 --restart always `
 -p 5050:80 `
 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com `
 -e PGADMIN_DEFAULT_PASSWORD=String1@ `
--v C:/ProgramData/docker-volumes/pgadmin-local:/var/lib/pgadmin `
+-v C:/ProgramData/docker-volumes/pgadmin:/var/lib/pgadmin `
 -d dpage/pgadmin4
 ```
 
@@ -41,7 +41,7 @@ docker run `
 
 4. __Under__ `General`
    
-    `Name` - the name of the PostgreSQL container, e.g. `postgres-local`
+    `Name` - the name of the PostgreSQL container, e.g. `postgres`
 
 5. __Under__ `Connection`
 

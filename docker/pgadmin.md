@@ -6,6 +6,7 @@
 ```
 docker run \
 --name <container-name> \
+--restart always \
 -p <port-on-host>:80 \
 -e PGADMIN_DEFAULT_EMAIL=<admin-email> \
 -e PGADMIN_DEFAULT_PASSWORD=<admin-password> \
@@ -16,7 +17,7 @@ docker run \
 ```
 docker run `
 --name pgadmin `
---restart always
+--restart always `
 -p 5555:80 `
 -e PGADMIN_DEFAULT_EMAIL=admin@admin.admin `
 -e PGADMIN_DEFAULT_PASSWORD=String1@ `

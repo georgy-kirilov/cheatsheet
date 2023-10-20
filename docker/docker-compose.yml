@@ -27,8 +27,6 @@ services:
     depends_on:
       - db
       - rabbitmq
-    networks:
-      - application-net
 
   db:
     container_name: application-db
@@ -41,8 +39,6 @@ services:
       - POSTGRES_DB=${DB_NAME}
     volumes:
       - ${DB_VOLUME_PATH}:/var/lib/postgresql/data
-    networks:
-      - application-net
 
   rabbitmq:
     container_name: application-rabbitmq
@@ -55,9 +51,3 @@ services:
       - RABBITMQ_DEFAULT_PASS=password
     volumes:
       - ${RABBITMQ_VOLUME_PATH}:/var/lib/rabbitmq
-    networks:
-      - application-net
-
-networks:
-  application-net:
-    driver: bridge

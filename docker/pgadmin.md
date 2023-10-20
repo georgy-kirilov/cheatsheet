@@ -11,6 +11,7 @@ docker run \
 -p <port-on-host>:80 \
 -e PGADMIN_DEFAULT_EMAIL=<admin-email> \
 -e PGADMIN_DEFAULT_PASSWORD=<admin-password> \
+-v <absolute-path-to-volume-on-host>:/var/lib/pgadmin
 -d dpage/pgadmin4
 ```
 
@@ -22,6 +23,7 @@ docker run `
 -p 5333:80 `
 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com `
 -e PGADMIN_DEFAULT_PASSWORD=String1@ `
+-v C:/Users/georg/docker/volumes/pgadmin/data:/var/lib/pgadmin
 -d dpage/pgadmin4
 ```
 

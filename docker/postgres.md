@@ -25,6 +25,6 @@ docker run `
 -e POSTGRES_USER=postgres `
 -e POSTGRES_DB=postgres `
 -p 5444:5432 `
--v C:/docker/volumes/postgres/data:/var/lib/postgresql/data `
+-v C:/Users/georg/docker/volumes/postgres/data:/var/lib/postgresql/data `
 -d postgres:16
 ```

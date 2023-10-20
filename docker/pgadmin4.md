@@ -1,21 +1,9 @@
-# Running pgAdmin4 in a docker container
+## Running pgAdmin4 in a docker container
 
 ### View the full documentation here:
 https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
 
-### Command template
-```
-docker run \
---name <container-name> \
---restart always \
--p <port-on-host>:80 \
--e PGADMIN_DEFAULT_EMAIL=<admin-email> \
--e PGADMIN_DEFAULT_PASSWORD=<admin-password> \
--v <absolute-path-to-volume-on-host>:/var/lib/pgadmin \
--d dpage/pgadmin4
-```
-
-### Example in Powershell
+### Example command in Powershell
 ```
 docker run `
 --name pgadmin `

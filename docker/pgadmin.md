@@ -29,7 +29,7 @@ docker run `
 
 ## Connect to a PostgreSQL container instance:
 
-1. __Launch__ `http://localhost:5333` __inside of a browser__
+1. __Launch__ `http://localhost:5050` __inside of a browser__
 
 2. __Right click on__ `Servers` > `Register` > `Server...`
 
@@ -41,7 +41,7 @@ docker run `
 
     `Host name/address` - `host.docker.internal`
 
-    `Port` - the host port of the PostgreSQL container (e.g. `5444`)
+    `Port` - the host port of the PostgreSQL container (e.g. `5433`)
 
     `Username` - the PostgreSQL container POSTGRES_USER value (e.g. `postgres`)
 

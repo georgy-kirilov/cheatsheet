@@ -3,7 +3,7 @@
 ### View the full documentation here:
 https://hub.docker.com/_/postgres/
 
-## Command template
+### Command template
 ```
 docker run \
 --name <container-name> \
@@ -16,7 +16,7 @@ docker run \
 -d postgres:<version>
 ```
 
-## Example in Powershell
+### Example in Powershell
 ```
 docker run `
 --name postgres `

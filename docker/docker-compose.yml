@@ -1,13 +1,19 @@
 # .env:
+
 # API_ENV=Development
 # API_PORT=5000
+
 # DB_PORT=5435
 # DB_USER=admin
 # DB_PASSWORD=String1@
 # DB_NAME=application
 # DB_VOLUME_PATH=C:/ProgramData/docker-volumes/application/db
+
+# RABBITMQ_PORT=5673
+# RABBITMQ_UI_PORT=15673
+# RABBITMQ_USER=admin
+# RABBITMQ_PASSWORD=String1@
 # RABBITMQ_VOLUME_PATH=C:/ProgramData/docker-volumes/application/rabbitmq
-# RABBITMQ_PORT=5672
 
 version: '3.8'
 
@@ -45,9 +51,9 @@ services:
     image: rabbitmq:3.12.7
     ports:
       - "${RABBITMQ_PORT}:5672"
-      - "15672:15672"
+      - "${RABBITMQ_UI_PORT}:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     volumes:
       - ${RABBITMQ_VOLUME_PATH}:/var/lib/rabbitmq

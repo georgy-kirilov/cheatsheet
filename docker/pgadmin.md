@@ -20,10 +20,10 @@ docker run \
 docker run `
 --name pgadmin `
 --restart always `
--p 5333:80 `
+-p 5050:80 `
 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com `
 -e PGADMIN_DEFAULT_PASSWORD=String1@ `
--v C:/Users/georg/docker/volumes/pgadmin/data:/var/lib/pgadmin `
+-v C:/ProgramData/docker_volumes/pgadmin:/var/lib/pgadmin `
 -d dpage/pgadmin4
 ```
 

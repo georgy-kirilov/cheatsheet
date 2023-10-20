@@ -1,7 +1,6 @@
 # Running a pgAdmin docker container
 
-### View the full pgAdmin in docker documentation:
-https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+### View the full documentation here: https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
 
 ## Command template
 ```

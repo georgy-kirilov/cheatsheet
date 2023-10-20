@@ -1,6 +1,7 @@
 # Running a PostgreSQL docker container
 
-### View the full documentation here: https://hub.docker.com/_/postgres/
+### View the full documentation here:
+https://hub.docker.com/_/postgres/
 
 ## Command template
 ```

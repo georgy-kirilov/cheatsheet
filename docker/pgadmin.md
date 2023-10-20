@@ -1,8 +1,6 @@
-# pgAdmin in Docker
+# Running pgAdmin4 in a docker container
 
-## Running pgAdmin4 in a docker container
-
-### View the full documentation here
+### View the full documentation here:
 https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
 
 ### Command template
@@ -27,14 +25,22 @@ docker run `
 -d dpage/pgadmin4
 ```
 
-## Connect to a PostgreSQL docker container instance:
-__Right click on__ `Servers` > `Register` > `Server...`
+## Connect to a PostgreSQL container instance:
 
-### Under `General`
-`Name` - the name of the PostgreSQL container (e.g. `postgres`)
+1. __Launch__ `http://localhost:5333` __inside of a browser__
 
-### Under `Connection`
-`Host name/address` - `host.docker.internal`
-`Port` - the host port of the PostgreSQL container (e.g. `5444`)
-`Username` - the PostgreSQL container POSTGRES_USER value (e.g. `postgres`)
-`Password` - the PostgreSQL container POSTGRES_PASSWORD (e.g. `String1@`)
+2. __Right click on__ `Servers` > `Register` > `Server...`
+
+3. __Under__ `General`
+   
+    `Name` - the name of the PostgreSQL container (e.g. `postgres`)
+
+5. __Under__ `Connection`
+
+    `Host name/address` - `host.docker.internal`
+
+    `Port` - the host port of the PostgreSQL container (e.g. `5444`)
+
+    `Username` - the PostgreSQL container POSTGRES_USER value (e.g. `postgres`)
+
+    `Password` - the PostgreSQL container POSTGRES_PASSWORD (e.g. `String1@`)

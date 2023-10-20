@@ -15,7 +15,7 @@ docker run `
 -d dpage/pgadmin4
 ```
 
-## Connect to a PostgreSQL container instance:
+## Connect to a PostgreSQL container instance
 
 1. __Launch__ `http://localhost:5050` __inside of a browser__
 

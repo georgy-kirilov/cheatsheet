@@ -1,5 +1,8 @@
 # Running a PostgreSQL docker container
 
+### Check the available PostgreSQL docker image versions:
+https://hub.docker.com/_/postgres/
+
 ## Command template
 ```
 docker run \

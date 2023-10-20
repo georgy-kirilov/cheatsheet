@@ -11,7 +11,7 @@ docker run \
 -p <port-on-host>:80 \
 -e PGADMIN_DEFAULT_EMAIL=<admin-email> \
 -e PGADMIN_DEFAULT_PASSWORD=<admin-password> \
--v <absolute-path-to-volume-on-host>:/var/lib/pgadmin `
+-v <absolute-path-to-volume-on-host>:/var/lib/pgadmin \
 -d dpage/pgadmin4
 ```
 

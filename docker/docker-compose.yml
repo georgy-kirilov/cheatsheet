@@ -55,7 +55,7 @@ services:
       - ${DB_VOLUME_PATH}:/var/lib/postgresql/data
 
   broker:
-    container_name: application-rabbitmq
+    container_name: application-broker
     image: rabbitmq:3.12.7
     ports:
       - "${RABBITMQ_PORT}:5672"

@@ -33,6 +33,8 @@ services:
     depends_on:
       - db
       - rabbitmq
+    volumes:
+      - ./Api:/app
 
   db:
     container_name: application-db

@@ -1,20 +1,3 @@
-# ENV=Development
-
-# BACKEND_PORT=5000
-# FRONTEND_PORT=3000
-
-# DB_PORT=5435
-# DB_USER=admin
-# DB_PASSWORD=String1@
-# DB_NAME=application
-# DB_VOLUME_PATH=C:/ProgramData/docker-volumes/application/db
-
-# BROKER_PORT=5673
-# BROKER_UI_PORT=15673
-# BROKER_USER=admin
-# BROKER_PASSWORD=String1@
-# BROKER_VOLUME_PATH=C:/ProgramData/docker-volumes/application/rabbitmq
-
 version: '3.8'
 
 services:

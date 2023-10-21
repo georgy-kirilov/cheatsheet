@@ -9,11 +9,11 @@
 # DB_NAME=application
 # DB_VOLUME_PATH=C:/ProgramData/docker-volumes/application/db
 
-# RABBITMQ_PORT=5673
-# RABBITMQ_UI_PORT=15673
-# RABBITMQ_USER=admin
-# RABBITMQ_PASSWORD=String1@
-# RABBITMQ_VOLUME_PATH=C:/ProgramData/docker-volumes/application/rabbitmq
+# BROKER_PORT=5673
+# BROKER_UI_PORT=15673
+# BROKER_USER=admin
+# BROKER_PASSWORD=String1@
+# BROKER_VOLUME_PATH=C:/ProgramData/docker-volumes/application/rabbitmq
 
 version: '3.8'
 
@@ -58,10 +58,10 @@ services:
     container_name: application-broker
     image: rabbitmq:3.12.7
     ports:
-      - "${RABBITMQ_PORT}:5672"
-      - "${RABBITMQ_UI_PORT}:15672"
+      - "${BROKER_PORT}:5672"
+      - "${BROKER_UI_PORT}:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_DEFAULT_USER=${BROKER_USER}
+      - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
     volumes:
-      - ${RABBITMQ_VOLUME_PATH}:/var/lib/rabbitmq
+      - ${BROKER_VOLUME_PATH}:/var/lib/rabbitmq

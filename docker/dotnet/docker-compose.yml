@@ -1,0 +1,16 @@
+services:
+  api:
+    container_name: application-api
+    image: application-api
+    build:
+      context: ./backend
+      dockerfile: Api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${API_PORT}:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Database=Host=database;Username=${DB_USER};Password=${DB_PASSWORD};Database=${DB_NAME};
+    depends_on:
+      - database
+      - message-broker

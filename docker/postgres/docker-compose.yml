@@ -1,0 +1,13 @@
+services:
+  database:
+    container_name: application-database
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ${DB_VOLUME_PATH}:/var/lib/postgresql/data

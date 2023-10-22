@@ -1,12 +1,13 @@
-## Running PostgreSQL in a docker container
+## Running PostgreSQL in docker
 
 ### Full documentation here: https://hub.docker.com/_/postgres/
 
-### Powershell command
-```
+### Running a simple container globally
+
+```powershell
 docker run `
---name postgres `
---restart always `
+--name postgres-database `
+--restart unless-stopped `
 -e POSTGRES_USER=admin `
 -e POSTGRES_PASSWORD=String1@ `
 -e POSTGRES_DB=postgres `
@@ -15,13 +16,13 @@ docker run `
 -d postgres:16
 ```
 
-## Running a PostgreSQL container through docker compose
+### Running a docker compose service
 
 __`docker-compose.yml`__
-``` 
+```yml
 services:
   database:
-    container_name: app-database
+    container_name: application-database
     image: postgres:16
     restart: unless-stopped
     ports:
@@ -35,14 +36,14 @@ services:
 ```
 
 __`docker-compose.override.yml`__
-```
+```yml
 services:
   database:
     restart: on-failure
 ```
 
 __`.env`__
-```
+```.env
 DB_PORT=5433
 DB_USER=admin
 DB_PASSWORD=String1@
@@ -54,11 +55,11 @@ DB_VOLUME_PATH=C:/ProgramData/docker-volumes/application/database
 
 ### Full documentation here: https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
 
-### Powershell command
-```
+### Running a simple container globally
+```powershell
 docker run `
 --name pgadmin `
---restart always `
+--restart unless-stopped `
 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com `
 -e PGADMIN_DEFAULT_PASSWORD=String1@ `
 -p 5050:80 `
@@ -74,11 +75,7 @@ docker run `
 
 3. __Right click on__ `Servers` > `Register` > `Server...`
 
-4. __Under__ `General`
-   
-    `Name` - the name of the PostgreSQL container, e.g. `postgres`
-
-5. __Under__ `Connection`
+4. __Under__ `Connection`
 
     `Host name/address` - `host.docker.internal`
 

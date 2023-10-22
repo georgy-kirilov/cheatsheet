@@ -2,11 +2,12 @@ version: '3.8'
 
 services:
 
-  frontend:
-    volumes:
-      - ./frontend:/app
-    command: ["yarn", "dev"]
-    
   backend:
+    build:
+      dockerfile: Api/Dockerfile.development
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     volumes:
-      - ./backend/Api:/app
+      - ./backend/Api:/src/Api:delegated
+      - /src/Api/obj
+      - /src/Api/bin

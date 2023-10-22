@@ -2,7 +2,7 @@
 
 ### Full documentation here: https://hub.docker.com/_/postgres/
 
-### Running a simple container globally
+### Running a simple container locally
 
 ```powershell
 docker run `
@@ -16,7 +16,7 @@ docker run `
 -d postgres:16
 ```
 
-### Running a docker compose service
+### Running PostgreSQL as a docker compose service
 
 __`docker-compose.yml`__
 ```yml
@@ -55,7 +55,7 @@ DB_VOLUME_PATH=C:/ProgramData/docker-volumes/application/database
 
 ### Full documentation here: https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
 
-### Running a simple container globally
+### Running a simple container locally
 ```powershell
 docker run `
 --name pgadmin `

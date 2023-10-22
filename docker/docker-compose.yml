@@ -17,7 +17,7 @@ services:
     image: application-backend
     build:
       context: ./backend
-      dockerfile: Api/Dockerfile
+      dockerfile: Api/Dockerfile.Development
     ports:
       - "${BACKEND_PORT}:80"
     environment:
@@ -26,6 +26,10 @@ services:
     depends_on:
       - database
       - broker
+    volumes:
+      - ./backend/Api:/src/Api
+      - /src/Api/obj
+      - /src/Api/bin
 
   database:
     container_name: application-database

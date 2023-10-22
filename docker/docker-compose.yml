@@ -10,7 +10,7 @@ services:
     ports:
       - "${FRONTEND_PORT}:3000"
     environment:
-      - NODE_ENV=${ENV}
+      - NODE_ENV=production
 
   backend:
     container_name: application-backend

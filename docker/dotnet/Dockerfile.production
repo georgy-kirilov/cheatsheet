@@ -33,8 +33,8 @@ RUN dotnet publish "Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 FROM base AS final
 WORKDIR /app
 
-# Copy published files from the publish stage
+# Copy published files
 COPY --from=publish /app/publish .
 
-# Set the entry point of the application
+# Run the application
 ENTRYPOINT ["dotnet", "Api.dll"]

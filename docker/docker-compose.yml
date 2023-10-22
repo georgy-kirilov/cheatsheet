@@ -2,16 +2,6 @@ version: '3.8'
 
 services:
 
-  frontend:
-    container_name: application-frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "${FRONTEND_PORT}:3000"
-    environment:
-      - NODE_ENV=production
-
   backend:
     container_name: application-backend
     image: application-backend

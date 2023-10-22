@@ -15,6 +15,41 @@ docker run `
 -d postgres:16
 ```
 
+## Running a PostgreSQL container through docker compose
+
+__`docker-compose.yml`__
+``` 
+services:
+  database:
+    container_name: app-database
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ${DB_VOLUME_PATH}:/var/lib/postgresql/data
+```
+
+__`docker-compose.override.yml`__
+```
+services:
+  database:
+    restart: on-failure
+```
+
+__`.env`__
+```
+DB_PORT=5433
+DB_USER=admin
+DB_PASSWORD=String1@
+DB_NAME=application
+DB_VOLUME_PATH=C:/ProgramData/docker-volumes/application/database
+```
+
 ## Running pgAdmin in a docker container
 
 ### Full documentation here: https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
@@ -33,7 +68,7 @@ docker run `
 
 ## Connect to a PostgreSQL container instance
 
-1. __Inside of a web browser launch:__ http://localhost:5050
+1. __Inside of a web browser launch:__ http://localhost:5050/browser/
 
 2. __Sign in using the `PGADMIN_DEFAULT_EMAIL` and `PGADMIN_DEFAULT_PASSWORD`, e.g. `admin@admin.com` and `String1@`__
 

@@ -1,24 +1,19 @@
-# Restore stage
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS restore
 WORKDIR /src
-COPY ["Api/Api.csproj", "Api/"]
-RUN dotnet restore "Api/Api.csproj"
+COPY . .
+RUN dotnet restore
 
-# Development stage
 FROM restore AS development
-WORKDIR /src/Api
-COPY Api/ .
+WORKDIR /src
 
-# Expose port
 EXPOSE 80
 
-# Install EF Core CLI and add it to PATH
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
-# Environment variables
 ENV ASPNETCORE_URLS=http://+:80
 ENV DOTNET_USE_POLLING_FILE_WATCHER=1
 
-# Run the application
+WORKDIR /src/Api
+
 ENTRYPOINT ["dotnet", "watch", "run", "--no-restore"]

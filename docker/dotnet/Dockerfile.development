@@ -1,19 +1,26 @@
+# Use SDK image for restore and build steps
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS restore
+
 WORKDIR /src
 COPY . .
 RUN dotnet restore
 
+# Use the same image to avoid pulling multiple images
 FROM restore AS development
-WORKDIR /src
 
-EXPOSE 80
-
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="${PATH}:/root/.dotnet/tools"
-
+# Set environment variables
+ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_URLS=http://+:80
 ENV DOTNET_USE_POLLING_FILE_WATCHER=1
 
+# Set working directory
 WORKDIR /src/Api
 
+# Install EF tool
+RUN dotnet tool install --global dotnet-ef
+
+# Add dotnet tools to PATH
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+# Watch for changes and restart app
 ENTRYPOINT ["dotnet", "watch", "run", "--no-restore"]

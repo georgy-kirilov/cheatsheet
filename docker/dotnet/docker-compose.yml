@@ -9,8 +9,7 @@ services:
     ports:
       - "${API_PORT}:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - Database=Host=database;Username=${DB_USER};Password=${DB_PASSWORD};Database=${DB_NAME};
+      - DATABASE=Host=database;Username=${DB_USER};Password=${DB_PASSWORD};Database=${DB_NAME};
     depends_on:
       - database
       - message-broker

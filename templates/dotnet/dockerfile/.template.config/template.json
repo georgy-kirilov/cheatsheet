@@ -1,0 +1,12 @@
+{
+  "author": "Gangstacoder",
+  "classifications": ["Dockerfile"],
+  "name": "Dockerfiles for ASP.NET Core API projects",
+  "identity": "Gangstacoder.Dockerfiles",
+  "shortName": "dockerfiles",
+  "tags": {
+    "language": "Dockerfile"
+  },
+  "sourceName": "__ProjectName__",
+  "preferNameDirectory": true
+}

@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      dockerfile: Api/Dockerfile.development
+    restart: on-failure
+    volumes:
+      - ./backend/Api:/src/Api:delegated
+      - /src/Api/obj
+      - /src/Api/bin

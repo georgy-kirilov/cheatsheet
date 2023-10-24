@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: application-api
+    image: application-api
+    build:
+      context: ./backend
+      dockerfile: Api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${API_PORT}:80"
+    environment:
+      - DATABASE=Host=database;Username=${DB_USER};Password=${DB_PASSWORD};Database=${DB_NAME};
+    depends_on:
+      - database
+      - message-broker
+
+  database:
+    container_name: application-database
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ${DB_VOLUME_PATH}:/var/lib/postgresql/data
+
+  message-broker:
+    container_name: application-message-broker
+    image: rabbitmq:3.12.7
+    ports:
+      - "${MESSAGE_BROKER_PORT}:5672"
+      - "${MESSAGE_BROKER_UI_PORT}:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${MESSAGE_BROKER_USER}
+      - RABBITMQ_DEFAULT_PASS=${MESSAGE_BROKER_PASSWORD}
+    volumes:
+      - ${MESSAGE_BROKER_VOLUME_PATH}:/var/lib/rabbitmq

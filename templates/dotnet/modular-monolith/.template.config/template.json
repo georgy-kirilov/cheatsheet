@@ -1,0 +1,20 @@
+{
+  "author": "Gangstacoder",
+  "classifications": ["Modular Monolith", "Docker", "DotNet", "NuxtJS"],
+  "name": "Modular Monolith Project Template",
+  "identity": "Gangstacoder.ModularMonolithTemplate",
+  "shortName": "modmon",
+  "tags": {
+    "type": "project"
+  },
+  "sourceName": "Application",
+  "preferNameDirectory": true,
+  "symbols": {
+    "kebab": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "application",
+      "fileRename": "application"
+    }
+  }
+}

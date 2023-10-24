@@ -5,7 +5,8 @@
   "identity": "Gangstacoder.ModularMonolithTemplate",
   "shortName": "modmon",
   "tags": {
-    "type": "project"
+    "type": "project",
+    "language": "C#"
   },
   "sourceName": "Application",
   "preferNameDirectory": false,

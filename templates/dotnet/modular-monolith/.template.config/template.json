@@ -1,6 +1,6 @@
 {
   "author": "Gangstacoder",
-  "classifications": ["Modular Monolith", "Docker", "DotNet", "NuxtJS"],
+  "classifications": ["Monolith", "Docker", "DotNet", "NuxtJS"],
   "name": "Modular Monolith Project Template",
   "identity": "Gangstacoder.ModularMonolithTemplate",
   "shortName": "modmon",

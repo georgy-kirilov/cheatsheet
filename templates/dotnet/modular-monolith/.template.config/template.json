@@ -8,13 +8,13 @@
     "type": "project",
     "language": "C#"
   },
-  "sourceName": "Application",
+  "sourceName": "__Application__",
   "preferNameDirectory": false,
   "symbols": {
     "service": {
       "type": "parameter",
       "datatype": "string",
-      "replaces": "application",
+      "replaces": "__application__",
       "fileRename": "application"
     }
   }

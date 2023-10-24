@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   api:
-    container_name: application-api
-    image: application-api
+    container_name: __application__-api
+    image: __application__-api
     build:
       context: ./backend
       dockerfile: Api/Dockerfile
@@ -17,7 +17,7 @@ services:
       - broker
 
   db:
-    container_name: application-db
+    container_name: __application__-db
     image: postgres:16
     restart: unless-stopped
     ports:
@@ -30,7 +30,7 @@ services:
       - ${DB_VOLUME_PATH}:/var/lib/postgresql/data
 
   broker:
-    container_name: application-broker
+    container_name: __application__-broker
     image: rabbitmq:3.12.7
     ports:
       - "${BROKER_PORT}:5672"

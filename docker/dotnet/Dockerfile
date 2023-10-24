@@ -9,7 +9,7 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
-# Restore the startup project
+# Restore
 COPY ./Api/Api.csproj ./Api/
 RUN dotnet restore ./Api/Api.csproj
 

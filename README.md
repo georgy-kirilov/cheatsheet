@@ -1,17 +1,11 @@
-# cheatsheet
+### Install template
 
-# Personal environment setup
+```
+dotnet new install ./templates/dotnet/modular-monolith --force
+```
 
-1. Git
-   <br>
-   https://git-scm.com/download
+### Use template
 
-2. Dotnet SDK
-   <br>
-   https://dotnet.microsoft.com/en-us/download
-
-3. Node JS
-   <br>
-   https://nodejs.org/en/download
-
-4. Docker
+```
+dotnet new modmon -n MyCoolApplication --kebab my-cool-application
+```

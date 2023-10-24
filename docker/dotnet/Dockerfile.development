@@ -6,7 +6,7 @@ WORKDIR /src
 # Copy all source files
 COPY . .
 
-# Restore only necessary projects
+# Restore
 RUN dotnet restore ./Api/Api.csproj
 
 # Use the same image for development
@@ -20,7 +20,7 @@ ENV DOTNET_USE_POLLING_FILE_WATCHER=1
 # Set working directory
 WORKDIR /src/Api
 
-# Install EF tool and add to PATH
+# Install EF tool and add it to PATH
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="${PATH}:/root/.dotnet/tools"
 

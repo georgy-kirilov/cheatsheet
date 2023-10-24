@@ -8,6 +8,5 @@
     "language": "Dockerfile"
   },
   "sourceName": "__ProjectName__",
-  "preferNameDirectory": false,
-  "targetDir": "./"
+  "preferNameDirectory": false
 }

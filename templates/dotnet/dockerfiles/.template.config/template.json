@@ -5,8 +5,10 @@
   "identity": "Gangstacoder.Dockerfiles",
   "shortName": "dockerfiles",
   "tags": {
+    "type": "item",
     "language": "Dockerfile"
   },
   "sourceName": "__ProjectName__",
-  "preferNameDirectory": false
+  "preferNameDirectory": false,
+  "exclude": ["README.md"]
 }

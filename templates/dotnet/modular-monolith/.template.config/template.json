@@ -8,9 +8,9 @@
     "type": "project"
   },
   "sourceName": "Application",
-  "preferNameDirectory": true,
+  "preferNameDirectory": false,
   "symbols": {
-    "kebab": {
+    "service": {
       "type": "parameter",
       "datatype": "string",
       "replaces": "application",

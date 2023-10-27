@@ -12,6 +12,10 @@ services:
       - "${API_PORT}:80"
     environment:
       - DATABASE=Host=db;Username=${DB_USER};Password=${DB_PASSWORD};Database=${DB_NAME};
+      - JWT_KEY=${JWT_KEY}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_AUDIENCE=${JWT_AUDIENCE}
+      - JWT_LIFETIME_SECONDS=${JWT_LIFETIME_SECONDS}
     depends_on:
       - db
       - broker

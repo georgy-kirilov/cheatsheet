@@ -6,6 +6,10 @@ services:
       dockerfile: Api/Dockerfile.development
     restart: on-failure
     volumes:
-      - ./backend/Api:/src/Api:delegated
+      - ./backend:/src:delegated
       - /src/Api/obj
       - /src/Api/bin
+      - /src/Accounts/obj
+      - /src/Accounts/bin
+      - /src/Shared/obj
+      - /src/Shared/bin

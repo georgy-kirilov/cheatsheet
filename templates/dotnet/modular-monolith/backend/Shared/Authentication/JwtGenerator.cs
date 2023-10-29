@@ -11,7 +11,7 @@ public sealed class JwtGenerator(JwtSettings jwtSettings)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
 
-        var token = new JwtSecurityToken
+        var securityToken = new JwtSecurityToken
         (
             jwtSettings.Issuer,
             jwtSettings.Audience,
@@ -23,6 +23,8 @@ public sealed class JwtGenerator(JwtSettings jwtSettings)
             }
         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var tokenAsText = new JwtSecurityTokenHandler().WriteToken(securityToken);
+
+        return tokenAsText;
     }
 }

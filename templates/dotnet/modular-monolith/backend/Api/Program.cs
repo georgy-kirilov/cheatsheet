@@ -1,18 +1,22 @@
 using Accounts;
 using Shared.Authentication;
+using Shared.Configuration;
+using Shared.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.Sources.Clear();
 
 builder.Configuration
-    .AddJsonFile("/src/Accounts/appsettings.json", optional: true)
-    .AddJsonFile("/src/Accounts/appsettings.Development.json", optional: true)
+    .AddAppsettingFilesFor("Accounts")
     .AddEnvironmentVariables()
     .Build();
 
 builder.Services
-    .AddAppAuthentication(builder.Configuration)
+    .AddAppDataProtection(builder.Configuration)
+    .AddAppAuthentication(builder.Configuration);
+
+builder.Services
     .AddAccountsModule(builder.Configuration);
 
 var app = builder.Build();

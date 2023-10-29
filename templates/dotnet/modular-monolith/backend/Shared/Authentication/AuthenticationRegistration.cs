@@ -16,14 +16,11 @@ public static class AuthenticationRegistration
             Key = configuration.GetValueOrThrow<string>(AuthenticationConfigurationSections.JwtKey),
             Issuer = configuration.GetValueOrThrow<string>(AuthenticationConfigurationSections.JwtIssuer),
             Audience = configuration.GetValueOrThrow<string>(AuthenticationConfigurationSections.JwtAudience),
-            LifetimeInSeconds = configuration.GetValueOrThrow<int>(AuthenticationConfigurationSections.LifetimeInSeconds)
+            LifetimeInSeconds = configuration.GetValueOrThrow<int>(AuthenticationConfigurationSections.JwtLifetimeInSeconds)
         };
 
-        services.AddSingleton(jwtSettings);
-
-        services.AddScoped<JwtGenerator>();
-
         services
+            .AddSingleton(jwtSettings)
             .AddAuthorization()
             .AddAuthentication(options =>
             {
@@ -43,6 +40,8 @@ public static class AuthenticationRegistration
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
                 };
             });
+
+        services.AddScoped<JwtGenerator>();
 
         return services;
     }

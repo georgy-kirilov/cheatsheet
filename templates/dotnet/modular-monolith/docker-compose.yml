@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   api:
-    container_name: __application__-api
-    image: __application__-api
+    container_name: modmontemplate-api
+    image: modmontemplate-api
     build:
       context: ./backend
       dockerfile: Api/Dockerfile
@@ -26,7 +26,7 @@ services:
       - ${VOLUMES_PATH}/data-protection/certificates:/app/certificates
 
   db:
-    container_name: __application__-db
+    container_name: modmontemplate-db
     image: postgres:16
     restart: unless-stopped
     ports:
@@ -39,7 +39,7 @@ services:
       - ${VOLUMES_PATH}/db:/var/lib/postgresql/data
 
   rabbitmq:
-    container_name: __application__-rabbitmq
+    container_name: modmontemplate-rabbitmq
     image: rabbitmq:3.12.7
     ports:
       - "5673:5672"

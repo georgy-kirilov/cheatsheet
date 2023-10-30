@@ -1,21 +1,21 @@
 {
-  "author": "Gangstacoder",
+  "author": "Georgi Kirilov",
   "classifications": ["Monolith", "Docker", "DotNet", "NuxtJS"],
   "name": "Modular Monolith Project Template",
-  "identity": "Gangstacoder.ModularMonolithTemplate",
+  "identity": "GeorgiKirilov.ModularMonolithTemplate",
   "shortName": "modmon",
   "tags": {
     "type": "project",
     "language": "C#"
   },
-  "sourceName": "__Application__",
+  "sourceName": "ModMonTemplate",
   "preferNameDirectory": false,
   "symbols": {
     "service": {
       "type": "parameter",
       "datatype": "string",
-      "replaces": "__application__",
-      "fileRename": "application"
+      "replaces": "modmontemplate",
+      "fileRename": "modmontemplate"
     }
   }
 }

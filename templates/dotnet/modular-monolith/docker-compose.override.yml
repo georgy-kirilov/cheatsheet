@@ -6,13 +6,17 @@ services:
       dockerfile: Api/Dockerfile.development
     restart: on-failure
     environment:
+      # Use development data protection certificate
       - DATA_PROTECTION_CERTIFICATE_PATH=/app/certificates/data-protection-development.pfx
     volumes:
+      # Mount development certificates directory
       - ./certificates:/app/certificates:ro
+      # Enable hot reloading
       - ./backend:/src:delegated
+      # Improve image build speed
       - /src/Api/obj
       - /src/Api/bin
-      - /src/Accounts/obj
-      - /src/Accounts/bin
       - /src/Shared/obj
       - /src/Shared/bin
+      - /src/Accounts/obj
+      - /src/Accounts/bin

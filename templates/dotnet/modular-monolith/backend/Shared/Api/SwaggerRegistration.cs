@@ -15,7 +15,7 @@ public static class SwaggerRegistration
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = $"ModMonTemplate.{typeof(TProgram).Name}",
+                Title = typeof(TProgram).Name,
                 Version = "v1"
             });
 

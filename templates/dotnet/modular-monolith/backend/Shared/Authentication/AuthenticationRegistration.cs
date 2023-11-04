@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -19,9 +20,16 @@ public static class AuthenticationRegistration
             LifetimeInSeconds = configuration.GetValueOrThrow<int>(AuthenticationConfigurationSections.JwtLifetimeInSeconds)
         };
 
+        services.AddScoped<JwtGenerator>();
+
         services
             .AddSingleton(jwtSettings)
-            .AddAuthorization()
+            .AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            })
             .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,8 +48,6 @@ public static class AuthenticationRegistration
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
                 };
             });
-
-        services.AddScoped<JwtGenerator>();
 
         return services;
     }

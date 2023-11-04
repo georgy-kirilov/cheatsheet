@@ -1,14 +1,26 @@
 using Accounts.Database.Entities;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
+using Shared.Api;
 
 namespace Accounts.Features;
 
 public static class Register
 {
+    public sealed class Endpoint : IEndpoint
+    {
+        public void Map(IEndpointRouteBuilder builder) =>
+            builder
+            .MapPost("/api/accounts/register", Handle)
+            .AllowAnonymous()
+            .WithTags("Accounts");
+    }
+
     public static async Task<Results<Ok, BadRequest<ValidationFailure[]>>> Handle(
         Request request,
         Validator validator,

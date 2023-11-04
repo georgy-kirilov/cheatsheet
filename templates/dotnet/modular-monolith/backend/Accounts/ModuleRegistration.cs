@@ -10,7 +10,7 @@ using Shared.Database;
 
 namespace Accounts;
 
-public static class ServiceRegistration
+public static class ModuleRegistration
 {
     public static IServiceCollection AddAccountsModule(this IServiceCollection services, IConfiguration configuration)
     {   

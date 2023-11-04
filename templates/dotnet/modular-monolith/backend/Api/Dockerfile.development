@@ -25,4 +25,4 @@ RUN dotnet tool install --global dotnet-ef
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 # Watch for changes and restart app
-ENTRYPOINT ["dotnet", "watch", "run", "--no-restore"]
+ENTRYPOINT ["dotnet", "watch", "run", "--no-restore", "--no-hot-reload"]

@@ -4,7 +4,7 @@ namespace Shared.Configuration;
 
 public static class ConfigurationExtensions
 {
-    public static IConfigurationBuilder AddAppsettingFilesFor(this IConfigurationBuilder configuration, string projectName) =>
+    public static IConfigurationBuilder AddAppSettingsFor(this IConfigurationBuilder configuration, string projectName) =>
         configuration
             .AddJsonFile($"/src/{projectName}/appsettings.json", optional: false)
             .AddJsonFile($"/src/{projectName}/appsettings.Development.json", optional: false);

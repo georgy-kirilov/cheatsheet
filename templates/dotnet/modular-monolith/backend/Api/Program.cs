@@ -1,4 +1,5 @@
 using Accounts;
+using Shared.Api;
 using Shared.Authentication;
 using Shared.Configuration;
 using Shared.DataProtection;
@@ -6,22 +7,21 @@ using Shared.DataProtection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.Sources.Clear();
-
 builder.Configuration
-    .AddAppsettingFilesFor("Accounts")
+    .AddAppSettingsFor(nameof(Accounts))
     .AddEnvironmentVariables()
     .Build();
 
 builder.Services
+    .AddAppSwagger<Program>()
     .AddAppDataProtection(builder.Configuration)
     .AddAppAuthentication(builder.Configuration);
 
-builder.Services
-    .AddAccountsModule(builder.Configuration);
+builder.Services.AddAccountsModule(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseAuthentication();
+app.UseAppSwagger();
 app.UseAuthorization();
 
 app.Run();

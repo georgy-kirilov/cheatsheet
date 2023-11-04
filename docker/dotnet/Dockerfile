@@ -1,19 +1,19 @@
-# Use ASP.NET runtime for final image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+# Use dotnet runtime for final image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 ENV ASPNETCORE_URLS=http://+:80
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-# Use SDK image for build steps
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+# Use dotnet sdk for build steps
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Restore
+# Restore dependencies
 COPY ./Api/Api.csproj ./Api/
 RUN dotnet restore ./Api/Api.csproj
 
-# Copy all other files and build
+# Copy all files and build
 COPY . .
 WORKDIR /src/Api
 RUN dotnet build "Api.csproj" -c Release -o /app/build

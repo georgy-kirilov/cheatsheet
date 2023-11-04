@@ -1,12 +1,12 @@
-# Use SDK image for restore steps
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS restore
+# Use dotnet sdk for restore steps
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 
 WORKDIR /src
 
 # Copy all source files
 COPY . .
 
-# Restore
+# Restore dependencies
 RUN dotnet restore ./Api/Api.csproj
 
 # Use the same image for development

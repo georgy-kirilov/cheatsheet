@@ -14,6 +14,8 @@ public static class ValidationRegistration
 
         services.AddValidatorsFromAssemblies(assemblies);
 
+        ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+
         return services;
     }
 }

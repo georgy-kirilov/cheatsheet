@@ -67,11 +67,15 @@ public static class Register
     {
         public Validator()
         {
-            RuleFor(x => x.Username).NotEmpty();
+            RuleFor(x => x.Username)
+                .NotEmpty();
+                
+            RuleFor(x => x.Email)
+                .NotEmpty();
 
-            RuleFor(x => x.Email).NotEmpty();
-
-            RuleFor(x => x.Password).NotEmpty().Matches(x => x.ConfirmPassword);
+            RuleFor(x => x.Password)
+                .NotEmpty()
+                .Equal(x => x.ConfirmPassword);
         }
     }
 }

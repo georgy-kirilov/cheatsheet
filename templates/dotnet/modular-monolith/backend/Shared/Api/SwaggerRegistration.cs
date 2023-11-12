@@ -15,7 +15,7 @@ public static class SwaggerRegistration
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = typeof(TProgram).Name,
+                Title = typeof(TProgram).Assembly.FullName,
                 Version = "v1"
             });
 

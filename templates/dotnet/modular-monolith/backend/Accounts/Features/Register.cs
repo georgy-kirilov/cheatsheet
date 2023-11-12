@@ -1,6 +1,7 @@
 using Accounts.Database.Entities;
 using FluentValidation;
 using FluentValidation.Results;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -24,7 +25,9 @@ public static class Register
     public static async Task<Results<Ok, BadRequest<ValidationFailure[]>>> Handle(
         Request request,
         Validator validator,
-        UserManager<User> userManager)
+        UserManager<User> userManager,
+        IPublishEndpoint bus,
+        CancellationToken cancellationToken)
     {
         var validationResult = validator.Validate(request);
 
@@ -51,6 +54,8 @@ public static class Register
 
             return TypedResults.BadRequest(identityErrors.ToArray());
         }
+
+        await bus.Publish(new UserRegisteredMessage(user.UserName, user.Id), cancellationToken);
 
         return TypedResults.Ok();
     }

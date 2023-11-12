@@ -4,11 +4,6 @@ namespace Shared.Configuration;
 
 public static class ConfigurationExtensions
 {
-    public static IConfigurationBuilder AddAppSettingsFor(this IConfigurationBuilder configuration, string projectName) =>
-        configuration
-            .AddJsonFile($"/src/{projectName}/appsettings.json", optional: false)
-            .AddJsonFile($"/src/{projectName}/appsettings.Development.json", optional: false);
-
     public static T GetValueOrThrow<T>(this IConfiguration configuration, string section)
     {
         var sectionData = configuration.GetSection(section);
@@ -19,5 +14,20 @@ public static class ConfigurationExtensions
         }
 
         return sectionData.Get<T>() ?? throw new FailedToLoadConfigurationValueException(section);
+    }
+
+    public static IConfigurationBuilder AddAppSettingsFor<TProgram>(this IConfigurationBuilder configuration) =>
+        configuration.AddAppSettingsFor(typeof(TProgram).Assembly.FullName!);
+
+    public static IConfigurationBuilder AddAppSettingsFor(this IConfigurationBuilder configuration,
+        params string[] projectNames) 
+    {
+        foreach (var projectName in projectNames.Distinct())
+        {
+            configuration.AddJsonFile($"/src/{projectName}/appsettings.json", optional: false);
+            configuration.AddJsonFile($"/src/{projectName}/appsettings.Development.json", optional: false);
+        }
+
+        return configuration;
     }
 }

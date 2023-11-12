@@ -3,6 +3,7 @@ using Shared.Api;
 using Shared.Authentication;
 using Shared.Configuration;
 using Shared.DataProtection;
+using Shared.Messaging;
 using Shared.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,11 +14,14 @@ builder.Configuration
     .AddEnvironmentVariables()
     .Build();
 
+builder.Services.AddLogging();
+
 builder.Services
     .AddAppSwagger<Program>()
-    .AddAppDataProtection(builder.Configuration)
     .AddAppAuthentication(builder.Configuration)
-    .AddAppValidation();
+    .AddAppDataProtection(builder.Configuration)
+    .AddAppMessaging(builder.Configuration, nameof(Accounts))
+    .AddAppValidation(nameof(Accounts));
 
 builder.Services.AddAccountsModule(builder.Configuration);
 
@@ -25,6 +29,6 @@ var app = builder.Build();
 
 app.UseAppSwagger();
 app.UseAuthorization();
-app.MapAppEndpoints();
+app.MapAppEndpoints(nameof(Accounts));
 
 app.Run();

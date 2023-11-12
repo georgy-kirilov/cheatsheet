@@ -3,10 +3,13 @@ using Shared.Api;
 using Shared.Authentication;
 using Shared.Configuration;
 using Shared.DataProtection;
+using Shared.Logging;
 using Shared.Messaging;
 using Shared.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.ConfigureAppLogging(builder.Environment);
 
 builder.Configuration.Sources.Clear();
 builder.Configuration
@@ -14,12 +17,11 @@ builder.Configuration
     .AddEnvironmentVariables()
     .Build();
 
-builder.Services.AddLogging();
-
 builder.Services
     .AddAppSwagger<Program>()
     .AddAppAuthentication(builder.Configuration)
     .AddAppDataProtection(builder.Configuration)
+    .AddAppLogging()
     .AddAppMessaging(builder.Configuration, nameof(Accounts))
     .AddAppValidation(nameof(Accounts));
 

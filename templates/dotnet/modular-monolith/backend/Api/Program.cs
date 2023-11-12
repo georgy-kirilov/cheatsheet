@@ -25,12 +25,13 @@ builder.Services
     .AddAppMessaging(builder.Configuration, nameof(Accounts))
     .AddAppValidation(nameof(Accounts));
 
-builder.Services.AddAccountsModule(builder.Configuration);
+builder.Services
+    .AddAccountsModule(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseAppSwagger();
-app.UseAuthorization();
+app.UseAppAuthorization();
 app.MapAppEndpoints(nameof(Accounts));
 
 app.Run();

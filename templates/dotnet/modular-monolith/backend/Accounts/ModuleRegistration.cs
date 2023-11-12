@@ -27,12 +27,13 @@ public static class ModuleRegistration
             .UseSnakeCaseNamingConvention();
         });
 
-        services.AddIdentity<User, Role>(options =>
+        services.AddIdentityCore<User>(options =>
         {
             options.Password = configuration.GetValueOrThrow<PasswordOptions>(AccountsConfigurationSections.Password);
             options.SignIn = configuration.GetValueOrThrow<SignInOptions>(AccountsConfigurationSections.SignIn);
             options.User = configuration.GetValueOrThrow<UserOptions>(AccountsConfigurationSections.User);
         })
+        .AddRoles<Role>()
         .AddEntityFrameworkStores<AccountsDbContext>();
 
         return services;

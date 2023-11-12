@@ -17,7 +17,7 @@ Enter the running API container:
 ```powershell
 cd /your/docker-compose/file/path
 docker-compose up --build
-docker-compose exec api -it /bin/bash
+docker-compose exec -it api /bin/bash
 dotnet ef migrations add InitialCreate --project ../Accounts -o Database/Migrations
 dotnet ef database update
 ```

@@ -43,12 +43,13 @@ services:
 
   rabbitmq:
     container_name: modmontemplate-rabbitmq
-    image: rabbitmq:3.12.7
+    image: rabbitmq:3.12.7-management
     ports:
       - "5673:5672"
       - "15673:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management listener [{port,15672}]
     volumes:
       - ${VOLUMES_PATH}/rabbitmq:/var/lib/rabbitmq

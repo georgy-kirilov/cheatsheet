@@ -1,12 +1,12 @@
-using Accounts.Database.Entities;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using FluentValidation.Results;
+using Accounts.Database.Entities;
+using Accounts.Services;
 using Shared.Api;
-using Shared.Authentication;
 
 namespace Accounts.Features;
 
@@ -20,9 +20,9 @@ public static class Login
             .WithTags("Accounts");
     }
 
-    public static async Task<Results<Ok<Response>, BadRequest<ValidationFailure>>> Handle(
-        HttpContext context,
+    public static async Task<Results<Ok, Ok<Response>, BadRequest<ValidationFailure>>> Handle(
         Request request,
+        HttpContext http,
         UserManager<User> userManager,
         JwtAuthService jwtAuthService)
     {
@@ -33,22 +33,37 @@ public static class Login
             return TypedResults.BadRequest(Errors.InvalidLoginCredentials);
         }
 
+        if (!await userManager.CheckPasswordAsync(user, request.Password))
+        {
+            return TypedResults.BadRequest(Errors.InvalidLoginCredentials);
+        }
+
         string token = jwtAuthService.GenerateJwtToken(user.Id, user.UserName!);
 
-        jwtAuthService.AppendJwtAuthCookie(context, token);
+        if (request.StoreJwtAuthTokenInCookies)
+        {
+            jwtAuthService.AppendJwtAuthCookie(http, token);
+            return TypedResults.Ok();
+        }
 
         return TypedResults.Ok(new Response(token));
     }
 
     public static class Errors
     {
-        public static readonly ValidationFailure InvalidLoginCredentials = new(string.Empty, "Invalid username or password.")
+        public static readonly ValidationFailure InvalidLoginCredentials = new()
         {
-            ErrorCode = "InvalidLoginCredentials"
+            ErrorCode = "InvalidLoginCredentials",
+            ErrorMessage = "Invalid username or password."
         };
     }
 
-    public sealed record Request(string Username, string Password);
+    public sealed record Request
+    (
+        string Username,
+        string Password,
+        bool StoreJwtAuthTokenInCookies
+    );
 
     public sealed record Response(string Token);
 }

@@ -1,10 +1,11 @@
-using Accounts.Database;
-using Accounts.Database.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Accounts.Database;
+using Accounts.Database.Entities;
+using Accounts.Services;
 using Shared.Configuration;
 using Shared.Database;
 
@@ -35,6 +36,8 @@ public static class ModuleRegistration
         })
         .AddRoles<Role>()
         .AddEntityFrameworkStores<AccountsDbContext>();
+
+        services.AddTransient<JwtAuthService>();
 
         return services;
     }

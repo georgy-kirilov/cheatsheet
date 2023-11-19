@@ -21,10 +21,8 @@ public static class AuthenticationRegistration
             LifetimeInSeconds = configuration.GetValueOrThrow<int>(AuthenticationConfigurationSections.JwtLifetimeInSeconds)
         };
 
-        services.AddTransient<JwtAuthService>();
-
         services.AddSingleton(jwtSettings);
-            
+
         services.AddAuthentication(x =>
         {
             x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -49,7 +47,9 @@ public static class AuthenticationRegistration
             .RequireAuthenticatedUser()
             .Build();
 
-        services.AddAuthorizationBuilder().SetDefaultPolicy(authenticationRequired);
+        services
+            .AddAuthorizationBuilder()
+            .SetDefaultPolicy(authenticationRequired);
 
         return services;
     }

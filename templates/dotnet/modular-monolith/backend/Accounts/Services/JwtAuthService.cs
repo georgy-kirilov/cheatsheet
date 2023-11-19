@@ -3,8 +3,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Authentication;
 
-namespace Shared.Authentication;
+namespace Accounts.Services;
 
 public sealed class JwtAuthService(JwtSettings jwtSettings)
 {
@@ -30,7 +31,7 @@ public sealed class JwtAuthService(JwtSettings jwtSettings)
         return jwtToken;
     }
 
-    public void AppendJwtAuthCookie(HttpContext context, string jwtToken)
+    public void AppendJwtAuthCookie(HttpContext httpContext, string jwtToken)
     {
         var cookieOptions = new CookieOptions
         {
@@ -40,6 +41,6 @@ public sealed class JwtAuthService(JwtSettings jwtSettings)
             Expires = DateTime.UtcNow.AddSeconds(jwtSettings.LifetimeInSeconds)
         };
 
-        context.Response.Cookies.Append(JwtAuthConstants.Cookie, jwtToken, cookieOptions);
+        httpContext.Response.Cookies.Append(JwtAuthConstants.Cookie, jwtToken, cookieOptions);
     }
 }

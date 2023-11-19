@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Shared.Authentication;
 
-public sealed class JwtInsideCookieMiddleware(RequestDelegate next)
+internal sealed class JwtInsideCookieMiddleware(RequestDelegate next)
 {
     public async Task Invoke(HttpContext context)
     {

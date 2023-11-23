@@ -26,6 +26,15 @@ public static class LoggingRegistration
                 .WriteTo.Seq(seqHost)
                 .CreateLogger();
         }
+        else
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Warning()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Seq(seqHost)
+                .CreateLogger();
+        }
 
         hostBuilder.UseSerilog();
     }

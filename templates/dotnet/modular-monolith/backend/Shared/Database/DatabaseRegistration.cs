@@ -28,7 +28,7 @@ public static class DatabaseRegistration
             })
             .UseSnakeCaseNamingConvention();
         }); 
-        
+
         return services;
     }
 

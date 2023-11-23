@@ -2,14 +2,12 @@ version: '3.8'
 
 services:
   api:
-    container_name: modmontemplate-api
     image: modmontemplate-api
+    container_name: modmontemplate-api
     build:
       context: ./backend
       dockerfile: Api/Dockerfile
     restart: unless-stopped
-    ports:
-      - "5000:80"
     environment:
       - DATABASE
       - RABBITMQ_HOST
@@ -21,35 +19,64 @@ services:
       - JWT_LIFETIME_SECONDS
       - DATA_PROTECTION_CERTIFICATE_PASSWORD
       - DATA_PROTECTION_CERTIFICATE_PATH
+      - SEQ_HOST
+    ports:
+      - "5000:80"
     depends_on:
       - db
       - rabbitmq
+      - seq
     volumes:
       - ${VOLUMES_PATH}/data-protection/keys:/root/.aspnet/DataProtection-Keys
       - ${VOLUMES_PATH}/data-protection/certificates:/app/certificates
 
   db:
-    container_name: modmontemplate-db
     image: postgres:16
+    container_name: modmontemplate-db
     restart: unless-stopped
-    ports:
-      - "5433:5432"
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
     volumes:
       - ${VOLUMES_PATH}/db:/var/lib/postgresql/data
 
-  rabbitmq:
-    container_name: modmontemplate-rabbitmq
-    image: rabbitmq:3.12.7-management
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: modmontemplate-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     ports:
-      - "5673:5672"
-      - "15673:15672"
+      - "5433:80"
+    depends_on:
+      - db
+    volumes:
+      - ${VOLUMES_PATH}/pgadmin:/var/lib/pgadmin
+
+  rabbitmq:
+    image: rabbitmq:3.12.7-management
+    container_name: modmontemplate-rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
       - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management listener [{port,15672}]
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     volumes:
       - ${VOLUMES_PATH}/rabbitmq:/var/lib/rabbitmq
+
+  seq:
+    image: datalust/seq:2023.4
+    container_name: modmontemplate-seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "5342:80"
+    volumes:
+      - ${VOLUMES_PATH}/seq:/data

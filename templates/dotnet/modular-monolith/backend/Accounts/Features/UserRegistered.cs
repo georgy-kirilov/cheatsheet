@@ -1,7 +1,9 @@
-using MassTransit;
 using Microsoft.Extensions.Logging;
+using MassTransit;
 
 namespace Accounts.Features;
+
+public sealed record UserRegisteredMessage(string Username, Guid UserId);
 
 public sealed class UserRegisteredMessageConsumer(
     ILogger<UserRegisteredMessageConsumer> logger) : IConsumer<UserRegisteredMessage>

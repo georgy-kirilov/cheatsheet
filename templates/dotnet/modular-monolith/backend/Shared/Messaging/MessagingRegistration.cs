@@ -1,8 +1,8 @@
 using System.Reflection;
-using Shared.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MassTransit;
+using Shared.Configuration;
 
 namespace Shared.Messaging;
 

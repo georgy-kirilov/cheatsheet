@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Shared.Configuration;
 
 namespace Shared.Database;
@@ -28,5 +30,16 @@ public static class DatabaseRegistration
         }); 
         
         return services;
+    }
+
+    public static async Task ApplyDevelopmentMigrations<TContext>(this WebApplication app)
+        where TContext : DbContext
+    {
+        if (app.Environment.IsDevelopment())
+        {
+            await using var scope = app.Services.CreateAsyncScope();
+            await using var db = scope.ServiceProvider.GetRequiredService<TContext>();
+            await db.Database.MigrateAsync();
+        }
     }
 }

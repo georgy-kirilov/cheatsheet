@@ -15,8 +15,7 @@ builder.Host.UseAppLogging(builder.Environment, builder.Configuration);
 
 builder.Configuration.Sources.Clear();
 builder.Configuration
-    .AddAppSettingsFor(
-        nameof(Accounts))
+    .AddAppSettingsFor(nameof(Accounts))
     .AddEnvironmentVariables()
     .Build();
 
@@ -25,7 +24,7 @@ builder.Services
     .AddAppAuthentication(builder.Configuration)
     .AddAppDataProtection(builder.Configuration)
     .AddAppLogging()
-    .AddAppMessaging(builder.Configuration,nameof(Accounts))
+    .AddAppMessaging(builder.Configuration, nameof(Accounts))
     .AddAppValidation(nameof(Accounts));
 
 builder.Services
@@ -33,10 +32,10 @@ builder.Services
 
 var app = builder.Build();
 
-await app.ApplyDevelopmentMigrations<AccountsDbContext>();
+await app.ApplyDevelopmentMigrationsFor<AccountsDbContext>();
 
 app.UseAppSwagger();
 app.UseAppAuthorization();
 app.MapAppEndpoints(nameof(Accounts));
 
-app.Run();
+await app.RunAsync();

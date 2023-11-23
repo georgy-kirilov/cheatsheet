@@ -10,7 +10,7 @@ namespace Shared.Logging;
 public static class LoggingRegistration
 {
     public static IServiceCollection AddAppLogging(this IServiceCollection services) => services.AddLogging();
-    
+
     public static void UseAppLogging(this IHostBuilder hostBuilder,
         IWebHostEnvironment environment,
         IConfiguration configuration)
@@ -24,17 +24,6 @@ public static class LoggingRegistration
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.Seq(seqHost)
-                .CreateLogger();
-        }
-        else
-        {
-            var seqApiKey = configuration.GetValueOrThrow<string>(LoggingConfigurationSections.SeqApiKey);
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Warning()
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.Seq(seqHost, apiKey: seqApiKey)
                 .CreateLogger();
         }
 

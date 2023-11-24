@@ -13,7 +13,8 @@ public static class Login
 {
     public sealed class Endpoint : IEndpoint
     {
-        public void Map(IEndpointRouteBuilder builder) => builder
+        public void Map(IEndpointRouteBuilder builder) =>
+            builder
             .MapPost("api/accounts/login", Handle)
             .AllowAnonymous()
             .WithTags("Accounts")
@@ -53,6 +54,7 @@ public static class Login
         }
 
         var response = new Response(token);
+
         return Results.Ok(response);        
     }
 

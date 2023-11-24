@@ -85,3 +85,13 @@ services:
       - "5342:80"
     volumes:
       - ${VOLUMES_PATH}/seq:/data
+
+  nginx:
+    image: nginx:1.25.3
+    container_name: modmontemplate-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    volumes:
+      - ./assets/nginx.conf:/etc/nginx/nginx.conf:ro

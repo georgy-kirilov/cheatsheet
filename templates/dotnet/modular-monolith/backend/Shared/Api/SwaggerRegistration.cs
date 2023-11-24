@@ -44,6 +44,12 @@ public static class SwaggerRegistration
                     Array.Empty<string>()
                 }
             });
+
+            options.AddServer(new OpenApiServer
+            {
+                Url = "/backend",
+                Description = "nginx"
+            });
         });
 
         return services;
@@ -57,7 +63,7 @@ public static class SwaggerRegistration
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.SwaggerEndpoint("/backend/swagger/v1/swagger.json", "v1");
                 options.RoutePrefix = string.Empty;
             });
         }

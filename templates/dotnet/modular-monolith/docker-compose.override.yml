@@ -10,7 +10,7 @@ services:
       - DATA_PROTECTION_CERTIFICATE_PATH=/app/certificates/data-protection-development.pfx
     volumes:
       # Mount development certificates directory
-      - ./certificates:/app/certificates:ro
+      - ./assets:/app/certificates:ro
       # Enable hot reloading
       - ./backend:/src:delegated
       # Improve image build speed

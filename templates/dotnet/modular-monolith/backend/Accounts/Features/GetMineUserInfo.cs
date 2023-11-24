@@ -14,7 +14,7 @@ public static class GetMineUserInfo
     public sealed class Endpoint : IEndpoint
     {
         public void Map(IEndpointRouteBuilder builder) => builder
-            .MapGet("/api/accounts/me/info", Handle)
+            .MapGet("api/accounts/me/info", Handle)
             .RequireAuthorization()
             .WithTags("Accounts");
     }

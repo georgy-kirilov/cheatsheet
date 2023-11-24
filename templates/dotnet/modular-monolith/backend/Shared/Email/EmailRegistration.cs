@@ -8,11 +8,12 @@ public static class EmailRegistration
 {
     public static IServiceCollection AddAppEmail(this IServiceCollection services, IConfiguration configuration)
     {
-        var sendGridApiKey = configuration.GetValueOrThrow<string>(EmailConfigurationSections.SendGridApiKey);
-
-        var sendGridSettings = new SendGridSettings { ApiKey = sendGridApiKey };
-
-        services.AddSingleton(sendGridSettings);
+        services.AddSingleton(new EmailSettings
+        {
+            ApiKey = configuration.GetValueOrThrow<string>(EmailConfigurationSections.EmailApiKey),
+            FromEmail = configuration.GetValueOrThrow<string>(EmailConfigurationSections.EmailFromAddress),
+            FromName = configuration.GetValueOrThrow<string>(EmailConfigurationSections.EmailFromName)
+        });
 
         services.AddTransient<IEmailSender, SendGridEmailSender>();
 

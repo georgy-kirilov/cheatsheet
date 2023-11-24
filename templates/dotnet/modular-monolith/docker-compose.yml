@@ -20,6 +20,9 @@ services:
       - DATA_PROTECTION_CERTIFICATE_PASSWORD
       - DATA_PROTECTION_CERTIFICATE_PATH
       - SEQ_HOST
+      - EMAIL_API_KEY
+      - EMAIL_FROM_ADDRESS
+      - EMAIL_FROM_NAME
     ports:
       - "5000:80"
     depends_on:

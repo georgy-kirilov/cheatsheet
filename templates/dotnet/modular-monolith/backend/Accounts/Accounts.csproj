@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Handlebars.Net" Version="2.1.4" />
   </ItemGroup>
 
   <ItemGroup>

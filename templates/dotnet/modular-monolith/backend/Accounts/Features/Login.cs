@@ -15,7 +15,7 @@ public static class Login
     public sealed class Endpoint : IEndpoint
     {
         public void Map(IEndpointRouteBuilder builder) => builder
-            .MapPost("/api/accounts/login", Handle)
+            .MapPost("api/accounts/login", Handle)
             .AllowAnonymous()
             .WithTags("Accounts");
     }

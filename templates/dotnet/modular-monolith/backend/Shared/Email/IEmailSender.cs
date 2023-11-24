@@ -2,9 +2,7 @@ namespace Shared.Email;
 
 public interface IEmailSender
 {
-    Task<bool> SendAsync(
-        string fromEmail,
-        string fromName,
+    Task<bool> SendEmailAsync(
         string toEmail,
         string toName,
         string subject,

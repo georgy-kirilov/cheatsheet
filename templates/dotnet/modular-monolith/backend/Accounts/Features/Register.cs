@@ -17,7 +17,7 @@ public static class Register
     {
         public void Map(IEndpointRouteBuilder builder) =>
             builder
-            .MapPost("/api/accounts/register", Handle)
+            .MapPost("api/accounts/register", Handle)
             .AllowAnonymous()
             .WithTags("Accounts");
     }
@@ -55,7 +55,7 @@ public static class Register
             return TypedResults.BadRequest(identityErrors.ToArray());
         }
 
-        await bus.Publish(new UserRegisteredMessage(user.UserName, user.Id), cancellationToken);
+        await bus.Publish(new UserAccountCreatedMessage(user), cancellationToken);
 
         return TypedResults.Ok();
     }

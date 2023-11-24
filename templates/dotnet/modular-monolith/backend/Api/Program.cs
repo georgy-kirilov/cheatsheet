@@ -5,6 +5,7 @@ using Shared.Authentication;
 using Shared.Configuration;
 using Shared.Database;
 using Shared.DataProtection;
+using Shared.Email;
 using Shared.Logging;
 using Shared.Messaging;
 using Shared.Validation;
@@ -23,6 +24,7 @@ builder.Services
     .AddAppSwagger<Program>()
     .AddAppAuthentication(builder.Configuration)
     .AddAppDataProtection(builder.Configuration)
+    .AddAppEmail(builder.Configuration)
     .AddAppLogging()
     .AddAppMessaging(builder.Configuration, nameof(Accounts))
     .AddAppValidation(nameof(Accounts));

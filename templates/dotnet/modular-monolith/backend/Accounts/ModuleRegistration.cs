@@ -17,6 +17,10 @@ public static class ModuleRegistration
     {   
         var connectionString = configuration.GetValueOrThrow<string>(DatabaseConfigurationSections.DefaultConnection);
 
+        services
+            .AddTransient<JwtAuthService>()
+            .AddTransient<AccountEmailService>();
+
         services.AddDbContext<AccountsDbContext>(dbOptions =>
         {
             dbOptions.UseNpgsql(connectionString, npgsqlOptions =>
@@ -35,9 +39,8 @@ public static class ModuleRegistration
             options.User = configuration.GetValueOrThrow<UserOptions>(AccountsConfigurationSections.User);
         })
         .AddRoles<Role>()
-        .AddEntityFrameworkStores<AccountsDbContext>();
-
-        services.AddTransient<JwtAuthService>();
+        .AddEntityFrameworkStores<AccountsDbContext>()
+        .AddDefaultTokenProviders();
 
         return services;
     }

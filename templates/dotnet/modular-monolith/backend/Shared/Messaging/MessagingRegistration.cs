@@ -1,20 +1,16 @@
-using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MassTransit;
 using Shared.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Shared.Messaging;
 
 public static class MessagingRegistration
 {
-    public static IServiceCollection AddAppMessaging<TProgram>(this IServiceCollection services,
-        IConfiguration configuration) =>
-        services.AddAppMessaging(configuration, typeof(TProgram).Assembly.FullName!);
-
-    public static IServiceCollection AddAppMessaging(this IServiceCollection services,
+    public static IServiceCollection AddMessaging(this IServiceCollection services,
         IConfiguration configuration,
-        params string[] consumersAssemblyNames)
+        Assembly[] consumerAssemblies)
     {
         var host = configuration.GetValueOrThrow<string>(MessagingConfigurationSections.RabbitMqHost);
         var username = configuration.GetValueOrThrow<string>(MessagingConfigurationSections.RabbitMqUsername);
@@ -22,11 +18,15 @@ public static class MessagingRegistration
 
         services.AddMassTransit(bus =>
         {
-            var assemblies = consumersAssemblyNames.Distinct().Select(Assembly.Load);
+            var consumerTypes = consumerAssemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(t => typeof(IConsumer).IsAssignableFrom(t) &&
+                    !t.IsInterface &&
+                    !t.IsAbstract);
 
-            foreach (var assembly in assemblies)
+            foreach (var consumerType in consumerTypes)
             {
-                bus.AddConsumers(assembly);
+                bus.AddConsumer(consumerType);
             }
 
             bus.SetKebabCaseEndpointNameFormatter();

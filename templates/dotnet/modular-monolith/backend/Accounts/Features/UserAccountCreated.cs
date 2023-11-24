@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Logging;
-using MassTransit;
 using Accounts.Database.Entities;
 using Accounts.Services;
+using MassTransit;
+using Microsoft.Extensions.Logging;
 
 namespace Accounts.Features;
 
@@ -13,7 +13,7 @@ public sealed class UserAccountCreatedConsumer(
 {
     public async Task Consume(ConsumeContext<UserAccountCreatedMessage> context)
     {
-        logger.LogInformation("A user account for '{Username}' was created with ID '{UserId}'",
+        logger.LogInformation("A user account for '{Username}' was created with ID '{UserId}'.",
             context.Message.User.UserName,
             context.Message.User.Id);
 

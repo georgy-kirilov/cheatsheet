@@ -1,10 +1,10 @@
 using Accounts.Database.Entities;
 using Accounts.Services;
+using Shared.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
-using Shared.Api;
 
 namespace Accounts.Features;
 
@@ -28,11 +28,11 @@ public static class SendEmailConfirmation
 
         if (user is null)
         {
-            return TypedResults.NotFound();
+            return Results.NotFound();
         }
 
         await accountEmailService.SendEmailConfirmation(user);
 
-        return TypedResults.Ok();
+        return Results.Ok();
     }
 }

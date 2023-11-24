@@ -14,7 +14,7 @@ public static class DatabaseRegistration
         IConfiguration configuration,
         string schema,
         string section = DatabaseConfigurationSections.DefaultConnection)
-        where TContext : BaseDbContext
+        where TContext : DbContext
     {
         var connectionString = configuration.GetValueOrThrow<string>(section);
 
@@ -32,7 +32,7 @@ public static class DatabaseRegistration
         return services;
     }
 
-    public static async Task ApplyDevelopmentMigrationsFor<TContext>(this WebApplication app)
+    public static async Task ApplyMigrationsInDevelopment<TContext>(this WebApplication app)
         where TContext : DbContext
     {
         if (app.Environment.IsDevelopment())

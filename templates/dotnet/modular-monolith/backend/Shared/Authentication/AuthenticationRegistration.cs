@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +12,7 @@ namespace Shared.Authentication;
 
 public static class AuthenticationRegistration
 {
-    public static IServiceCollection AddAppAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = new JwtSettings
         {
@@ -54,8 +55,23 @@ public static class AuthenticationRegistration
         return services;
     }
 
-    public static IApplicationBuilder UseAppAuthorization(this WebApplication app) => app
-        .UseMiddleware<JwtInsideCookieMiddleware>()
-        .UseAuthentication()
-        .UseAuthorization();
+    public static WebApplication UseJwtFromInsideCookie(this WebApplication app)
+    {
+        app.Use(async (context, next) =>
+        {
+            if (!context.Request.Headers.ContainsKey(JwtAuthConstants.Header))
+            {
+                var cookie = context.Request.Cookies[JwtAuthConstants.Cookie];
+
+                if (cookie is not null)
+                {
+                    context.Request.Headers.Append(JwtAuthConstants.Header, $"Bearer {cookie}");
+                }
+            }
+
+            await next(context);
+        });
+
+        return app;
+    }
 }

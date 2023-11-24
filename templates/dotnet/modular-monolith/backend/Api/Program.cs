@@ -1,5 +1,3 @@
-using Accounts;
-using Accounts.Database;
 using Shared.Api;
 using Shared.Authentication;
 using Shared.Configuration;
@@ -8,36 +6,48 @@ using Shared.DataProtection;
 using Shared.Email;
 using Shared.Logging;
 using Shared.Messaging;
-using Shared.Validation;
+using Accounts;
+using Accounts.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseAppLogging(builder.Environment, builder.Configuration);
+builder.Host.UseLogging(builder.Environment, builder.Configuration);
 
 builder.Configuration.Sources.Clear();
 builder.Configuration
-    .AddAppSettingsFor(nameof(Accounts))
+    .AddAppSettings(
+    [
+        typeof(AccountsDbContext).Assembly
+    ])
     .AddEnvironmentVariables()
     .Build();
 
 builder.Services
-    .AddAppSwagger<Program>()
-    .AddAppAuthentication(builder.Configuration)
-    .AddAppDataProtection(builder.Configuration)
-    .AddAppEmail(builder.Configuration)
-    .AddAppLogging()
-    .AddAppMessaging(builder.Configuration, nameof(Accounts))
-    .AddAppValidation(nameof(Accounts));
+    .AddLogging()
+    .AddSwagger()
+    .AddAuthentication(builder.Configuration)
+    .AddDataProtection(builder.Configuration)
+    .AddEmail(builder.Configuration);
+
+builder.Services.AddMessaging(builder.Configuration,
+[
+    typeof(AccountsDbContext).Assembly
+]);
 
 builder.Services
     .AddAccountsModule(builder.Configuration);
 
-var app = builder.Build();
+var application = builder.Build();
 
-await app.ApplyDevelopmentMigrationsFor<AccountsDbContext>();
+await application.ApplyMigrationsInDevelopment<AccountsDbContext>();
 
-app.UseAppSwagger();
-app.UseAppAuthorization();
-app.MapAppEndpoints(nameof(Accounts));
+application
+    .UseSwaggerInDevelopment()
+    .UseJwtFromInsideCookie()
+    .UseAuthentication()
+    .UseAuthorization();
 
-await app.RunAsync();
+application
+    .MapApiEndpoints<AccountsDbContext>();
+
+await application.RunAsync();

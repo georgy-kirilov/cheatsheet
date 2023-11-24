@@ -1,20 +1,13 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Routing;
 
 namespace Shared.Api;
 
 public static class EndpointRegistration
 {
-    public static void MapAppEndpoints<TProgram>(this IEndpointRouteBuilder routeBuilder) =>
-        routeBuilder.MapAppEndpoints(typeof(TProgram).Assembly.FullName!);
-
-    public static void MapAppEndpoints(this IEndpointRouteBuilder routeBuilder,
-        params string[] endpointsAssemblyNames)
+    public static void MapApiEndpoints<TProgram>(this IEndpointRouteBuilder routeBuilder)
     {
-        var endpointTypes = endpointsAssemblyNames
-            .Distinct()
-            .Select(Assembly.Load)
-            .SelectMany(a => a.GetTypes())
+        var endpointTypes = typeof(TProgram).Assembly
+            .GetTypes()
             .Where(t =>
                 typeof(IEndpoint).IsAssignableFrom(t)
                 && !t.IsInterface

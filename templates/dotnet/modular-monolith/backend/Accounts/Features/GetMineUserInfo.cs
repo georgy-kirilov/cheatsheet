@@ -1,11 +1,10 @@
 using Accounts.Database.Entities;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
 using Shared.Api;
 using Shared.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 
 namespace Accounts.Features;
 
@@ -19,15 +18,13 @@ public static class GetMineUserInfo
             .WithTags("Accounts");
     }
 
-    public static async Task<Ok<Response>> Handle(
-        HttpContext http,
-        UserManager<User> userManager)
+    public static async Task<IResult> Handle(HttpContext http, UserManager<User> userManager)
     {
         var userId = http.User.GetUserId().ToString();
 
-        User user = await userManager.FindByIdAsync(userId) ?? throw new InvalidOperationException();
+        var user = await userManager.FindByIdAsync(userId) ?? throw new InvalidOperationException();
 
-        return TypedResults.Ok(new Response
+        return Results.Ok(new Response
         (
             user.Email,
             user.UserName

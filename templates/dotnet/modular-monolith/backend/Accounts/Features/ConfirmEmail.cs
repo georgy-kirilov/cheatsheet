@@ -1,9 +1,9 @@
 using Accounts.Database.Entities;
+using Shared.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
-using Shared.Api;
 
 namespace Accounts.Features;
 
@@ -26,16 +26,16 @@ public static class ConfirmEmail
 
         if (user is null)
         {
-            return TypedResults.NotFound();
+            return Results.NotFound();
         }
 
         var identityResult = await userManager.ConfirmEmailAsync(user, token);
 
         if (!identityResult.Succeeded)
         {
-            return TypedResults.BadRequest(identityResult.Errors);
+            return Results.BadRequest(identityResult.Errors);
         }
 
-        return TypedResults.Ok();
+        return Results.Ok();
     }
 }

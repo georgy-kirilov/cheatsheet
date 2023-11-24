@@ -1,13 +1,12 @@
 using Accounts.Database.Entities;
+using Shared.Api;
+using MassTransit;
 using FluentValidation;
 using FluentValidation.Results;
-using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
-using Shared.Api;
 
 namespace Accounts.Features;
 
@@ -22,23 +21,23 @@ public static class Register
             .WithTags("Accounts");
     }
 
-    public static async Task<Results<Ok, BadRequest<ValidationFailure[]>>> Handle(
+    public static async Task<IResult> Handle(
         Request request,
         Validator validator,
         UserManager<User> userManager,
-        IPublishEndpoint bus,
+        IBus bus,
         CancellationToken cancellationToken)
     {
         var validationResult = validator.Validate(request);
 
         if (!validationResult.IsValid)
         {
-            return TypedResults.BadRequest(validationResult.Errors.ToArray());
+            return Results.BadRequest(validationResult.Errors.ToArray());
         }
 
-        User user = new()
+        var user = new User
         {
-            UserName = request.Username,
+            UserName = request.Email,
             Email = request.Email
         };
 
@@ -52,17 +51,16 @@ public static class Register
                 ErrorMessage = err.Description
             });
 
-            return TypedResults.BadRequest(identityErrors.ToArray());
+            return Results.BadRequest(identityErrors.ToArray());
         }
 
         await bus.Publish(new UserAccountCreatedMessage(user), cancellationToken);
 
-        return TypedResults.Ok();
+        return Results.Ok();
     }
 
     public sealed record Request
     (
-        string Username,
         string Email,
         string Password,
         string ConfirmPassword
@@ -71,10 +69,7 @@ public static class Register
     public sealed class Validator : AbstractValidator<Request>
     {
         public Validator()
-        {
-            RuleFor(x => x.Username)
-                .NotEmpty();
-                
+        {       
             RuleFor(x => x.Email)
                 .NotEmpty();
 

@@ -10,7 +10,7 @@ public static class DataProtectionRegistration
 {
     public const string DataProtectionKeysPathInsideDocker = "/root/.aspnet/DataProtection-Keys";
 
-    public static IServiceCollection AddAppDataProtection(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDataProtection(this IServiceCollection services, IConfiguration configuration)
     {
         var certificatePath = configuration.GetValueOrThrow<string>(DataProtectionConfigurationSections.CertificatePath);
         var certificatePassword = configuration.GetValueOrThrow<string>(DataProtectionConfigurationSections.CertificatePassword);

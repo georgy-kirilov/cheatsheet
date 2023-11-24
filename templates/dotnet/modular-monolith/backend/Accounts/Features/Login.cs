@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
-using FluentValidation.Results;
 using Accounts.Database.Entities;
 using Accounts.Services;
 using Shared.Api;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 
 namespace Accounts.Features;
 
@@ -17,53 +16,62 @@ public static class Login
         public void Map(IEndpointRouteBuilder builder) => builder
             .MapPost("api/accounts/login", Handle)
             .AllowAnonymous()
-            .WithTags("Accounts");
+            .WithTags("Accounts")
+            .Produces(StatusCodes.Status400BadRequest);
     }
 
-    public static async Task<Results<Ok, Ok<Response>, BadRequest<ValidationFailure>>> Handle(
+    public static async Task<IResult> Handle(
         Request request,
         HttpContext http,
         UserManager<User> userManager,
+        SignInOptions signInOptions,
         JwtAuthService jwtAuthService)
     {
-        User? user = await userManager.FindByNameAsync(request.Username);
+        var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
         {
-            return TypedResults.BadRequest(Errors.InvalidLoginCredentials);
+            return Results.BadRequest(Errors.InvalidLoginCredentials);
         }
 
         if (!await userManager.CheckPasswordAsync(user, request.Password))
         {
-            return TypedResults.BadRequest(Errors.InvalidLoginCredentials);
+            return Results.BadRequest(Errors.InvalidLoginCredentials);
         }
 
-        string token = jwtAuthService.GenerateJwtToken(user.Id, user.UserName!);
+        if (signInOptions.RequireConfirmedEmail && !user.EmailConfirmed)
+        {
+            return Results.BadRequest(Errors.ConfirmedEmailRequired);
+        }
 
-        if (request.StoreJwtAuthTokenInCookies)
+        var token = jwtAuthService.GenerateJwtToken(user.Id, user.UserName!);
+
+        if (request.StoreJwtInCookie)
         {
             jwtAuthService.AppendJwtAuthCookie(http, token);
-            return TypedResults.Ok();
+            return Results.Ok();
         }
 
-        return TypedResults.Ok(new Response(token));
+        var response = new Response(token);
+        return Results.Ok(response);        
     }
+
+    public sealed record Request(string Email, string Password, bool StoreJwtInCookie);
+
+    public sealed record Response(string Token);
 
     public static class Errors
     {
-        public static readonly ValidationFailure InvalidLoginCredentials = new()
+        public static ValidationFailure InvalidLoginCredentials => new()
         {
             ErrorCode = "InvalidLoginCredentials",
-            ErrorMessage = "Invalid username or password."
+            ErrorMessage = "Invalid email or password."
+        };
+
+        public static ValidationFailure ConfirmedEmailRequired => new()
+        {
+            ErrorCode = "ConfirmedEmailRequired",
+            ErrorMessage = "You need to confirm your email address."
         };
     }
-
-    public sealed record Request
-    (
-        string Username,
-        string Password,
-        bool StoreJwtAuthTokenInCookies
-    );
-
-    public sealed record Response(string Token);
 }

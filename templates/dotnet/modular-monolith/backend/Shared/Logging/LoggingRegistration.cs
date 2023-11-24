@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Shared.Configuration;
@@ -9,9 +8,7 @@ namespace Shared.Logging;
 
 public static class LoggingRegistration
 {
-    public static IServiceCollection AddAppLogging(this IServiceCollection services) => services.AddLogging();
-
-    public static void UseAppLogging(this IHostBuilder hostBuilder,
+    public static void UseLogging(this IHostBuilder hostBuilder,
         IWebHostEnvironment environment,
         IConfiguration configuration)
     {

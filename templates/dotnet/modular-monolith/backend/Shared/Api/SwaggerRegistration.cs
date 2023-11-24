@@ -7,7 +7,7 @@ namespace Shared.Api;
 
 public static class SwaggerRegistration
 {
-    public static IServiceCollection AddAppSwagger<TProgram>(this IServiceCollection services)
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
 
@@ -15,8 +15,8 @@ public static class SwaggerRegistration
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Version = "v1",
-                Title = typeof(TProgram).Assembly.GetName().Name
+                Title = "ModMonTemplate",
+                Version = "v1"
             });
 
             options.CustomSchemaIds(id => id.FullName?.Replace('+', '.'));
@@ -49,11 +49,11 @@ public static class SwaggerRegistration
         return services;
     }
 
-    public static IApplicationBuilder UseAppSwagger(this WebApplication app)
+    public static WebApplication UseSwaggerInDevelopment(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
+            SwaggerBuilderExtensions.UseSwagger(app);
 
             app.UseSwaggerUI(options =>
             {

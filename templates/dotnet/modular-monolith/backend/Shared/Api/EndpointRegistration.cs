@@ -4,7 +4,7 @@ namespace Shared.Api;
 
 public static class EndpointRegistration
 {
-    public static void MapApiEndpoints<TProgram>(this IEndpointRouteBuilder routeBuilder)
+    public static IEndpointRouteBuilder MapApiEndpoints<TProgram>(this IEndpointRouteBuilder routeBuilder)
     {
         var endpointTypes = typeof(TProgram).Assembly
             .GetTypes()
@@ -18,5 +18,7 @@ public static class EndpointRegistration
             var instance = Activator.CreateInstance(type) as IEndpoint ?? throw new FailedToRegisterApiEndpointException(type);
             instance.Map(routeBuilder);
         }
+
+        return routeBuilder;
     }
 }

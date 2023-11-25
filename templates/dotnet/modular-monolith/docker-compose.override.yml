@@ -1,6 +1,12 @@
 version: '3.8'
 
 services:
+  nginx:
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker-dev-volumes/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
   api:
     build:
       dockerfile: Api/Dockerfile.development
@@ -9,8 +15,7 @@ services:
       # Use development data protection certificate
       - DATA_PROTECTION_CERTIFICATE_PATH=/app/certificates/data-protection-development.pfx
     volumes:
-      # Mount development certificates directory
-      - ./assets:/app/certificates:ro
+      - ./docker-dev-volumes/api/data-protection/certificates:/app/certificates:ro
       # Enable hot reloading
       - ./backend:/src:delegated
       # Improve image build speed

@@ -5,10 +5,12 @@ using HandlebarsDotNet;
 using Shared.Email;
 using Accounts.Database.Entities;
 using Accounts.Features;
+using Shared.Configuration;
 
 namespace Accounts.Services;
 
 public sealed class AccountEmailService(
+    FilePathResolver filePathResolver,
     UserManager<User> userManager,
     IEmailSender emailSender,
     ILogger<AccountEmailService> logger)
@@ -33,9 +35,10 @@ public sealed class AccountEmailService(
         }
     }
 
-    private static async Task<string> RenderAsync(string templateName, Dictionary<string, object> parameters)
+    private async Task<string> RenderAsync(string templateName, Dictionary<string, object> parameters)
     {
-        var templateContent = await File.ReadAllTextAsync($"/src/Accounts/Resources/{templateName}.html");
+        var path = filePathResolver.ResolvePath($"Resources/{templateName}.html");
+        var templateContent = await File.ReadAllTextAsync(path);
         var compiledTemplate = Handlebars.Compile(templateContent);
         var html = compiledTemplate.Invoke(parameters);
         return html;

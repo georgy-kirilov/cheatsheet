@@ -57,8 +57,8 @@ public static class SwaggerRegistration
 
     public static WebApplication UseSwaggerInDevelopment(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
-        {
+        // if (app.Environment.IsDevelopment())
+        // {
             app.UseSwagger();
 
             app.UseSwaggerUI(options =>
@@ -66,7 +66,7 @@ public static class SwaggerRegistration
                 options.SwaggerEndpoint("/backend/swagger/v1/swagger.json", "v1");
                 options.RoutePrefix = string.Empty;
             });
-        }
+        // }
 
         return app;
     }

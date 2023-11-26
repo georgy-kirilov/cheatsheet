@@ -26,9 +26,10 @@ public static class LoggingRegistration
         else
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Warning()
+                .MinimumLevel.Information()
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
+                .MinimumLevel.Warning()
                 .WriteTo.Seq(seqHost)
                 .CreateLogger();
         }

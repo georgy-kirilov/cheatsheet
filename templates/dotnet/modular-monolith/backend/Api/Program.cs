@@ -14,15 +14,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseLogging(builder.Environment, builder.Configuration);
 
 builder.Configuration.Sources.Clear();
+
 builder.Configuration
-    .AddAppSettings(
-    [
-        typeof(AccountsDbContext).Assembly
-    ])
+    .AddAppSettings<AccountsDbContext>(builder.Environment);
+
+builder.Configuration
     .AddEnvironmentVariables()
     .Build();
 
 builder.Services
+    .AddConfiguration()
     .AddLogging()
     .AddSwagger()
     .AddAuthentication(builder.Configuration)
@@ -47,7 +48,8 @@ application
     .UseAuthentication()
     .UseAuthorization();
 
-application
-    .MapApiEndpoints<AccountsDbContext>();
+application.MapGroup("api").RequireAuthorization()
+    .MapApiEndpoints<AccountsDbContext>()
+    .MapGet("ping", () => "Hello");
 
-await application.RunAsync();
+application.Run();

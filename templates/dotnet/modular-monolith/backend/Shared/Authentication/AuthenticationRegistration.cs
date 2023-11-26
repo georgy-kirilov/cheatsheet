@@ -1,6 +1,5 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -44,13 +43,7 @@ public static class AuthenticationRegistration
             };
         });
 
-        var authenticationRequired = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-
-        services
-            .AddAuthorizationBuilder()
-            .SetDefaultPolicy(authenticationRequired);
+        services.AddAuthorization();
 
         return services;
     }

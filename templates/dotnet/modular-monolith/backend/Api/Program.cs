@@ -48,8 +48,8 @@ application
     .UseAuthentication()
     .UseAuthorization();
 
-application.MapGroup("api").RequireAuthorization()
+application.MapGroup("/").RequireAuthorization()
     .MapApiEndpoints<AccountsDbContext>()
-    .MapGet("ping", () => "Hello").AllowAnonymous();
+    .MapGet("ping", () => new { Message = "Hello" }).AllowAnonymous();
 
 application.Run();

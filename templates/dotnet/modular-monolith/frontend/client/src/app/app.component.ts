@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,13 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'ModMonTemplate';
+
+  constructor(private http: HttpClient) { }
+
+  ngOnInit(): void {
+    this.http.get<any>('/api/ping').subscribe({
+      next: res => console.log(res),
+      error: res => console.error(res.error)
+    });
+  }
 }

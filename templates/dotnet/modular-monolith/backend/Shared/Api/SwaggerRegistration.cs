@@ -47,7 +47,7 @@ public static class SwaggerRegistration
 
             options.AddServer(new OpenApiServer
             {
-                Url = "/backend",
+                Url = "/api",
                 Description = "Enable the redirection of requests coming from the Swagger UI through the Nginx server."
             });
         });
@@ -57,16 +57,16 @@ public static class SwaggerRegistration
 
     public static WebApplication UseSwaggerInDevelopment(this WebApplication app)
     {
-        // if (app.Environment.IsDevelopment())
-        // {
+        if (app.Environment.IsDevelopment())
+        {
             app.UseSwagger();
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/backend/swagger/v1/swagger.json", "v1");
+                options.SwaggerEndpoint("/api/swagger/v1/swagger.json", "v1");
                 options.RoutePrefix = string.Empty;
             });
-        // }
+        }
 
         return app;
     }

@@ -50,6 +50,6 @@ application
 
 application.MapGroup("api").RequireAuthorization()
     .MapApiEndpoints<AccountsDbContext>()
-    .MapGet("ping", () => "Hello");
+    .MapGet("ping", () => "Hello").AllowAnonymous();
 
 application.Run();

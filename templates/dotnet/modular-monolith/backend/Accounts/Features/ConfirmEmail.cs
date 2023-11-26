@@ -11,7 +11,7 @@ public static class ConfirmEmail
 {
     public sealed class Endpoint : IEndpoint
     {
-        public const string Route = "api/accounts/confirm-email";
+        public const string Route = "accounts/confirm-email";
 
         public void Map(IEndpointRouteBuilder builder) =>
             builder

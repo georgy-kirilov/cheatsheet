@@ -14,7 +14,7 @@ public static class SendEmailConfirmation
     {
         public void Map(IEndpointRouteBuilder builder) =>
             builder
-            .MapGet("api/accounts/send-email-confirmation", Handle)
+            .MapGet("accounts/send-email-confirmation", Handle)
             .AllowAnonymous()
             .WithTags("Accounts");
     }

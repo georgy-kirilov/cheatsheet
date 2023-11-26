@@ -15,7 +15,7 @@ public static class Login
     {
         public void Map(IEndpointRouteBuilder builder) =>
             builder
-            .MapPost("api/accounts/login", Handle)
+            .MapPost("accounts/login", Handle)
             .AllowAnonymous()
             .WithTags("Accounts")
             .Produces(StatusCodes.Status400BadRequest);

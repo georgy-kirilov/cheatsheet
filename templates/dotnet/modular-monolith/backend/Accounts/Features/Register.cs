@@ -16,7 +16,7 @@ public static class Register
     {
         public void Map(IEndpointRouteBuilder builder) =>
             builder
-            .MapPost("api/accounts/register", Handle)
+            .MapPost("accounts/register", Handle)
             .AllowAnonymous()
             .WithTags("Accounts");
     }

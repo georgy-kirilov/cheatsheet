@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using FluentValidation;
+using Shared.Authentication;
 
 namespace Accounts.Features;
 
@@ -23,11 +25,20 @@ public static class Login
 
     public static async Task<IResult> Handle(
         Request request,
+        Validator validator,
         HttpContext http,
         UserManager<User> userManager,
         SignInOptions signInOptions,
+        JwtSettings jwtSettings,
         JwtAuthService jwtAuthService)
     {
+        var validationResult = validator.Validate(request);
+
+        if (!validationResult.IsValid)
+        {
+            return Results.BadRequest(validationResult.Errors);
+        }
+
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
@@ -50,24 +61,31 @@ public static class Login
         if (request.StoreJwtInCookie)
         {
             jwtAuthService.AppendJwtAuthCookie(http, token);
-            return Results.Ok();
         }
 
-        var response = new Response(token);
-
+        var response = new Response(token, jwtSettings.LifetimeInSeconds);
         return Results.Ok(response);        
+    }
+
+    public sealed class Validator : AbstractValidator<Request>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.Email).NotEmpty();
+            RuleFor(x => x.Password).NotEmpty();
+        }
     }
 
     public sealed record Request(string Email, string Password, bool StoreJwtInCookie);
 
-    public sealed record Response(string Token);
+    public sealed record Response(string Token, int LifetimeInSeconds);
 
     public static class Errors
     {
         public static ValidationFailure InvalidLoginCredentials => new()
         {
             ErrorCode = "InvalidLoginCredentials",
-            ErrorMessage = "Invalid email or password."
+            ErrorMessage = "Invalid email address or password."
         };
 
         public static ValidationFailure ConfirmedEmailRequired => new()

@@ -1,24 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+
   title = 'ModMonTemplate';
 
-  constructor(private http: HttpClient) { }
-
-  ngOnInit(): void {
-    this.http.get<any>('/api/ping').subscribe({
-      next: res => console.log(res),
-      error: res => console.error(res.error)
-    });
-  }
+  authService = inject(AuthService);
 }

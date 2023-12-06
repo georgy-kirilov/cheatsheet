@@ -32,7 +32,7 @@ public static class Register
 
         if (!validationResult.IsValid)
         {
-            return Results.BadRequest(validationResult.Errors.ToArray());
+            return Results.BadRequest(validationResult.Errors);
         }
 
         var user = new User
@@ -51,7 +51,7 @@ public static class Register
                 ErrorMessage = err.Description
             });
 
-            return Results.BadRequest(identityErrors.ToArray());
+            return Results.BadRequest(identityErrors);
         }
 
         await bus.Publish(new UserAccountCreatedMessage(user), cancellationToken);
@@ -71,7 +71,8 @@ public static class Register
         public Validator()
         {       
             RuleFor(x => x.Email)
-                .NotEmpty();
+                .NotEmpty()
+                .EmailAddress();
 
             RuleFor(x => x.Password)
                 .NotEmpty()

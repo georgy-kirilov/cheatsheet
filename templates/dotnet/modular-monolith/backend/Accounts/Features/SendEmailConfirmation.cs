@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using FluentValidation.Results;
 
 namespace Accounts.Features;
 
@@ -14,25 +15,34 @@ public static class SendEmailConfirmation
     {
         public void Map(IEndpointRouteBuilder builder) =>
             builder
-            .MapGet("accounts/send-email-confirmation", Handle)
+            .MapPost("accounts/send-email-confirmation", Handle)
             .AllowAnonymous()
             .WithTags("Accounts");
     }
 
     public static async Task<IResult> Handle(
-        string email,
+        Request request,
         UserManager<User> userManager,
         AccountEmailService accountEmailService)
     {
-        var user = await userManager.FindByEmailAsync(email);
+        var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
         {
-            return Results.NotFound();
+            return Results.BadRequest(new ValidationFailure[]
+            {
+                new()
+                {
+                    ErrorCode = "UserNotFound",
+                    ErrorMessage = "No user with such email was found."
+                }
+            });
         }
 
         await accountEmailService.SendEmailConfirmation(user);
 
         return Results.Ok();
     }
+
+    public sealed record Request(string Email);
 }

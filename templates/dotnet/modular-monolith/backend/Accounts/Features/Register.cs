@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Accounts.Features;
 
@@ -47,6 +49,7 @@ public static class Register
         {
             var identityErrors = identityResult.Errors.Select(err => new ValidationFailure
             {
+                PropertyName = string.Empty,
                 ErrorCode = err.Code,
                 ErrorMessage = err.Description
             });
@@ -68,15 +71,32 @@ public static class Register
 
     public sealed class Validator : AbstractValidator<Request>
     {
-        public Validator()
-        {       
+        public Validator(IdentityOptions identityOptions)
+        {
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .EmailAddress();
+                .WithMessage("Email address is required.")
+                .EmailAddress()
+                .WithMessage("Email address is not in a valid format.");
 
             RuleFor(x => x.Password)
                 .NotEmpty()
-                .Equal(x => x.ConfirmPassword);
+                .WithMessage("Password is required.")
+                .MinimumLength(identityOptions.Password.RequiredLength)
+                .WithMessage($"Password must be at least {identityOptions.Password.RequiredLength} characters long.")
+                .NotEqual(x => x.Email)
+                .WithMessage("Password cannot be the same as the email address.");
+
+            if (identityOptions.Password.RequireDigit)
+            {
+                RuleFor(x => x.Password)
+                    .Must(password => password.Any(char.IsDigit))
+                    .WithMessage("Password must contain at least one digit.");
+            }
+
+            RuleFor(x => x.ConfirmPassword)
+                .Equal(x => x.Password)
+                .WithMessage("Passwords do not match.");
         }
     }
 }

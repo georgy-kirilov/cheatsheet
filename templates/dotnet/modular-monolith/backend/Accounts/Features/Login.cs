@@ -28,7 +28,7 @@ public static class Login
         Validator validator,
         HttpContext http,
         UserManager<User> userManager,
-        SignInOptions signInOptions,
+        IdentityOptions identityOptions,
         JwtSettings jwtSettings,
         JwtAuthService jwtAuthService)
     {
@@ -43,17 +43,26 @@ public static class Login
 
         if (user is null)
         {
-            return Results.BadRequest(Errors.InvalidLoginCredentials);
+            return Results.BadRequest(new ValidationFailure[]
+            {
+                Errors.InvalidLoginCredentials
+            });
         }
 
         if (!await userManager.CheckPasswordAsync(user, request.Password))
         {
-            return Results.BadRequest(Errors.InvalidLoginCredentials);
+            return Results.BadRequest(new ValidationFailure[]
+            {
+                Errors.InvalidLoginCredentials
+            });
         }
 
-        if (signInOptions.RequireConfirmedEmail && !user.EmailConfirmed)
+        if (identityOptions.SignIn.RequireConfirmedEmail && !user.EmailConfirmed)
         {
-            return Results.BadRequest(Errors.ConfirmedEmailRequired);
+            return Results.BadRequest(new ValidationFailure[]
+            {
+                Errors.ConfirmedEmailRequired
+            });
         }
 
         var token = jwtAuthService.GenerateJwtToken(user.Id, user.UserName!);
@@ -84,12 +93,14 @@ public static class Login
     {
         public static ValidationFailure InvalidLoginCredentials => new()
         {
+            PropertyName = string.Empty,
             ErrorCode = "InvalidLoginCredentials",
             ErrorMessage = "Invalid email address or password."
         };
 
         public static ValidationFailure ConfirmedEmailRequired => new()
         {
+            PropertyName = string.Empty,
             ErrorCode = "ConfirmedEmailRequired",
             ErrorMessage = "You need to confirm your email address."
         };

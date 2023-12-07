@@ -1,8 +1,7 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../auth/auth.service';
+import { AccountService } from '../accounts/account.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,9 +10,6 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {
-
-  private http = inject(HttpClient);
   authService = inject(AuthService);
-
-  userInfo = toSignal(this.http.get<any>('api/accounts/me/info'));
+  userInfo = inject(AccountService).getMineUserInfo();
 }

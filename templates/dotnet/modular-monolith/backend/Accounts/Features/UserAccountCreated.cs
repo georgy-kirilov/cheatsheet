@@ -9,7 +9,8 @@ public sealed record UserAccountCreatedMessage(User User);
 
 public sealed class UserAccountCreatedConsumer(
     AccountEmailService accountEmailService,
-    ILogger<UserAccountCreatedConsumer> logger) : IConsumer<UserAccountCreatedMessage>
+    ILogger<UserAccountCreatedConsumer> logger)
+    : IConsumer<UserAccountCreatedMessage>
 {
     public async Task Consume(ConsumeContext<UserAccountCreatedMessage> context)
     {

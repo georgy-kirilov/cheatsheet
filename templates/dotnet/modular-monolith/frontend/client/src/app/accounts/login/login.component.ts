@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
+import { ValidationComponent } from '../../validation/validation/validation.component';
+import { ErrorsModel } from '../../validation/errors-model';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ValidationComponent],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
@@ -15,20 +17,18 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private http = inject(HttpClient);
 
-  email: string = '';
-  password: string = '';
-  errors: string[] = [];
+  errors = new ErrorsModel;
+
+  input = {
+    email: '',
+    password: '',
+    storeJwtInCookie: true
+  };
 
   login(): void {
-    const request: any = {
-      email: this.email,
-      password: this.password,
-      storeJwtInCookie: true
-    };
-
-    this.http.post('api/accounts/login', request).subscribe({
-      next: (res: any) => this.authService.login(res.lifetimeInSeconds),
-      error: err => this.errors = [ err.error.errorMessage ]
+    this.http.post<any>('api/accounts/login', this.input).subscribe({
+      next: res => this.authService.login(res.lifetimeInSeconds),
+      error: err => this.errors.set(err)
     });
   }
 }

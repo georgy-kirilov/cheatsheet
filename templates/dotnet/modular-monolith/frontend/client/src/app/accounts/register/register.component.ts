@@ -1,31 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ErrorsModel } from '../../validation/errors-model';
+import { ValidationComponent } from '../../validation/validation/validation.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ValidationComponent],
   templateUrl: './register.component.html'
 })
 export class RegisterComponent {
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  errors: string[] = [];
 
-  constructor(private http: HttpClient, private router: Router) { }
+  private http = inject(HttpClient);
+
+  errors = new ErrorsModel;
+
+  input = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+
+  emailConfirmationSent = false;
+  accountRequiresConfirmation = false;
 
   register(): void {
-    this.http.post('api/accounts/register', {
-      email: this.email,
-      password: this.password,
-      confirmPassword: this.confirmPassword
+    this.http.post<any>('api/accounts/register', this.input).subscribe({
+      next: _ => this.accountRequiresConfirmation = true,
+      error: err => this.errors.set(err)
+    });
+  }
+
+  resendConfirmationEmail(): void {
+    this.http.post<any>('api/accounts/send-email-confirmation', {
+      email: this.input.email
     }).subscribe({
-      next: _ => this.router.navigateByUrl('/'),
-      error: err => this.errors = err.error.map((e: any) => e.errorMessage)
+      next: _ => this.emailConfirmationSent = true,
+      error: err => console.error(err)
     });
   }
 }

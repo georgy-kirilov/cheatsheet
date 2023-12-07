@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using HandlebarsDotNet;
 using Shared.Email;
 using Accounts.Database.Entities;
-using Accounts.Features;
 using Shared.Configuration;
 
 namespace Accounts.Services;
@@ -20,7 +19,7 @@ public sealed class AccountEmailService(
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         var encodedToken = WebUtility.UrlEncode(token);
 
-        var url = $"http://localhost:5000/{ConfirmEmail.Endpoint.Route}?userId={user.Id}&token={encodedToken}";
+        var url = $"http://localhost:8080/accounts/email-confirmation?userId={user.Id}&token={encodedToken}";
         var html = await RenderAsync("ConfirmEmailTemplate", new() { ["ConfirmationUrl"] = url });
 
         var emailSent = await emailSender.SendEmailAsync(

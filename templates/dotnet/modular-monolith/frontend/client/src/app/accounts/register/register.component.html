@@ -1,20 +1,46 @@
-<div class="flex items-center justify-center min-h-screen bg-background-default">
+@if (accountRequiresConfirmation) {
+  <div class="flex items-center justify-center min-h-screen">
     <div class="max-w-md w-full p-8 bg-background-card shadow-xl rounded-lg">
-        <h1 class="text-3xl font-header mb-10 text-primary text-center">Create a new account</h1>
-        <div class="mb-6">
-            <label class="block text-text-secondary text-sm font-body mb-2" for="email">Email</label>
-            <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="email" [(ngModel)]="email" type="email" placeholder="you@example.com" />
-        </div>
-        <div class="mb-5">
-            <label class="block text-text-secondary text-sm font-body mb-2" for="email">Password</label>
-            <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="password" [(ngModel)]="password" type="password" placeholder="Enter your password..." />
-        </div>
-        <div class="mb-6">
-            <label class="block text-text-secondary text-sm font-body mb-2" for="email">Confirm Password</label>
-            <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="confirmPassword" [(ngModel)]="confirmPassword" type="password" placeholder="Confirm your password..." />
-        </div>
-        <div>
-            <button class="bg-primary hover:bg-secondary hover:text-black text-white font-body py-3 px-6 rounded focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 w-full transition duration-150 ease-in-out" (click)="register()">Register</button>
-        </div>
+      <h1 class="text-3xl font-header mb-6 text-primary text-center">Confirm Your Email</h1>
+      <p class="text-text-secondary text-sm font-body mb-6 text-center">
+        Thank you for registering. Please check your email inbox to confirm your email address.
+      </p>
+      <div class="text-center">
+        @if (emailConfirmationSent) {
+          <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4">Email confirmation has been resent.</div>
+        }
+        @else {
+          <button class="bg-primary hover:bg-secondary hover:text-black text-white font-body py-3 px-6 rounded focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transition duration-150 ease-in-out" (click)="resendConfirmationEmail()">Resend Confirmation Email</button>
+        }
+      </div>
     </div>
-</div>
+  </div>
+}
+@else {
+  <div class="flex items-center justify-center min-h-screen bg-background-default">
+    <div class="max-w-md w-full p-8 bg-background-card shadow-xl rounded-lg">
+      <h1 class="text-3xl font-header mb-10 text-primary text-center">Create a new account</h1>
+      <div class="mb-2">
+        <validation [errors]="errors" />
+      </div>
+      <div class="mb-6">
+        <label class="block text-text-secondary text-sm font-body mb-2" for="email">Email</label>
+        <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="email" [(ngModel)]="input.email" type="email" placeholder="you@example.com" />
+        <validation [errors]="errors" for="email" />
+      </div>
+      <div class="mb-5">
+        <label class="block text-text-secondary text-sm font-body mb-2" for="email">Password</label>
+        <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="password" [(ngModel)]="input.password" type="password" placeholder="Enter your password..." />
+        <validation [errors]="errors" for="password" />
+      </div>
+      <div class="mb-6">
+        <label class="block text-text-secondary text-sm font-body mb-2" for="email">Confirm Password</label>
+        <input class="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="confirmPassword" [(ngModel)]="input.confirmPassword" type="password" placeholder="Confirm your password..." />
+        <validation [errors]="errors" for="confirmPassword" />
+      </div>
+      <div>
+        <button class="bg-primary hover:bg-secondary hover:text-black text-white font-body py-3 px-6 rounded focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 w-full transition duration-150 ease-in-out" (click)="register()">Register</button>
+      </div>
+    </div>
+  </div>    
+}

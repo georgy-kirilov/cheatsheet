@@ -8,6 +8,6 @@ import { withCredentialsInterceptor } from './auth/with-credentials.interceptor'
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withFetch(), withInterceptors([withCredentialsInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([withCredentialsInterceptor]))
   ]
 };

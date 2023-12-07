@@ -3,14 +3,17 @@
     <div class="max-w-md w-full p-8 bg-background-card shadow-xl rounded-lg">
       <h1 class="text-3xl font-header mb-6 text-primary text-center">Confirm Your Email</h1>
       <p class="text-text-secondary text-sm font-body mb-6 text-center">
-        Thank you for registering. Please check your email inbox to confirm your email address.
+        Thank you for registering.
+        You should receive a confirmation email in your inbox within a few minutes.
+        If it's not there, please check your spam folder.
       </p>
       <div class="text-center">
         @if (emailConfirmationSent) {
           <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4">Email confirmation has been resent.</div>
         }
         @else {
-          <button class="bg-primary hover:bg-secondary hover:text-black text-white font-body py-3 px-6 rounded focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transition duration-150 ease-in-out" (click)="resendConfirmationEmail()">Resend Confirmation Email</button>
+          <span>Haven't received an email?</span>
+          <button class="text-blue-600 hover:text-blue-800 underline font-semibold" (click)="resendConfirmationEmail()">Resend Email Confirmation</button>
         }
       </div>
     </div>

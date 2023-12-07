@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../account.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { ErrorsModel } from '../../validation/errors-model';
 import { ValidationComponent } from '../../validation/validation/validation.component';
 
 @Component({
   selector: 'app-email-confirmation',
   standalone: true,
-  imports: [CommonModule, ValidationComponent],
+  imports: [CommonModule, RouterModule, ValidationComponent],
   templateUrl: './email-confirmation.component.html'
 })
 export class EmailConfirmationComponent {

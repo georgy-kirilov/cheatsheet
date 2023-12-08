@@ -4,14 +4,14 @@ FROM node:20.10.0 as build
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock)
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies, including Angular CLI
 RUN npm install
 RUN npm install -g @angular/cli
 
-# Copy the rest of the Angular app's source code
+# Copy the rest of the Angular app source code
 COPY . .
 
 # Build the Angular app for production

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using Accounts.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Accounts.Features;
 
@@ -30,7 +32,7 @@ public static class Register
         IBus bus,
         CancellationToken cancellationToken)
     {
-        var validationResult = validator.Validate(request);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -71,15 +73,19 @@ public static class Register
 
     public sealed class Validator : AbstractValidator<Request>
     {
-        public Validator(IdentityOptions identityOptions)
+        public Validator(IdentityOptions identityOptions, AccountsDbContext db)
         {
             RuleFor(x => x.Email)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Email address is required.")
                 .EmailAddress()
-                .WithMessage("Email address is not in a valid format.");
+                .WithMessage("Email address is not in a valid format.")
+                .MustAsync((email, cancellationToken) => db.Users.AllAsync(x => x.Email != email, cancellationToken))
+                .WithMessage("Email address already exists.");
 
             RuleFor(x => x.Password)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Password is required.")
                 .MinimumLength(identityOptions.Password.RequiredLength)

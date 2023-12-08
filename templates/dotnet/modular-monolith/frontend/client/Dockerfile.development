@@ -14,8 +14,8 @@ RUN npm install -g @angular/cli
 # Step 5: Copy the rest of the client's source code
 COPY . .
 
-# Step 6: Expose port 4200 for the Angular app
-EXPOSE 4200
+# Step 6: Expose port 80 for the Angular app
+EXPOSE 80
 
 # Step 7: Run the app when the container launches
 CMD ["npm", "start"]

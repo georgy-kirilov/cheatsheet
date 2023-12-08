@@ -28,7 +28,7 @@ services:
       context: ./frontend/client
       dockerfile: Dockerfile
     ports:
-      - "4200:4200"
+      - "4200:80"
     restart: unless-stopped
 
   api:

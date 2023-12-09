@@ -1,8 +1,8 @@
-using MassTransit;
-using Shared.Configuration;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using MassTransit;
+using Shared.Configuration;
 
 namespace Shared.Messaging;
 
@@ -12,18 +12,15 @@ public static class MessagingRegistration
         IConfiguration configuration,
         Assembly[] consumerAssemblies)
     {
-        var host = configuration.GetValueOrThrow<string>(MessagingConfigurationSections.RabbitMqHost);
-        var username = configuration.GetValueOrThrow<string>(MessagingConfigurationSections.RabbitMqUsername);
-        var password = configuration.GetValueOrThrow<string>(MessagingConfigurationSections.RabbitMqPassword);
+        var username = configuration.GetValueOrThrow<string>("RABBITMQ_USER");
+        var password = configuration.GetValueOrThrow<string>("RABBITMQ_PASSWORD");
+
+        var consumerTypes = consumerAssemblies
+            .SelectMany(a => a.GetTypes())
+            .Where(t => !t.IsInterface && !t.IsAbstract && typeof(IConsumer).IsAssignableFrom(t));
 
         services.AddMassTransit(bus =>
         {
-            var consumerTypes = consumerAssemblies
-                .SelectMany(a => a.GetTypes())
-                .Where(t => typeof(IConsumer).IsAssignableFrom(t) &&
-                    !t.IsInterface &&
-                    !t.IsAbstract);
-
             foreach (var consumerType in consumerTypes)
             {
                 bus.AddConsumer(consumerType);
@@ -33,7 +30,7 @@ public static class MessagingRegistration
 
             bus.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host(host, "/", h =>
+                cfg.Host("rabbitmq", "/", h =>
                 {
                     h.Username(username);
                     h.Password(password);

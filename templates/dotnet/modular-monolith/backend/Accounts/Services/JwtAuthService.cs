@@ -41,6 +41,6 @@ public sealed class JwtAuthService(JwtSettings jwtSettings)
             Expires = DateTime.UtcNow.AddSeconds(jwtSettings.LifetimeInSeconds)
         };
 
-        httpContext.Response.Cookies.Append(JwtAuthConstants.Cookie, jwtToken, cookieOptions);
+        httpContext.Response.Cookies.Append(Shared.Authentication.JwtConstants.Cookie, jwtToken, cookieOptions);
     }
 }

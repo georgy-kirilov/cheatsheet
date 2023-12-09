@@ -6,6 +6,8 @@ namespace Shared.Configuration;
 
 public sealed class FilePathResolver(IWebHostEnvironment environment)
 {
+    public string GetResourceFilePath(string fileName) => ResolvePath($"Resources/{fileName}");
+
     public string ResolvePath(string relativeRootPath)
     {
         var projectName = Assembly.GetCallingAssembly().GetName().Name;

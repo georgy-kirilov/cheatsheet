@@ -11,7 +11,7 @@ using Accounts.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseLogging(builder.Environment, builder.Configuration);
+builder.Host.UseLogging(builder.Environment);
 
 builder.Configuration.Sources.Clear();
 
@@ -26,7 +26,7 @@ builder.Services
     .AddConfiguration()
     .AddLogging()
     .AddSwagger()
-    .AddAuthentication(builder.Configuration)
+    .AddAuthentication(builder.Configuration, builder.Environment)
     .AddDataProtection(builder.Configuration)
     .AddEmail(builder.Configuration);
 

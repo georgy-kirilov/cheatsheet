@@ -43,20 +43,15 @@ services:
     ports:
       - "5000:80"
     environment:
-      - DATABASE
-      - RABBITMQ_HOST
-      - RABBITMQ_USER
-      - RABBITMQ_PASSWORD
       - JWT_KEY
-      - JWT_ISSUER
-      - JWT_AUDIENCE
-      - JWT_LIFETIME_SECONDS
       - DATA_PROTECTION_CERTIFICATE_PASSWORD
-      - DATA_PROTECTION_CERTIFICATE_PATH
-      - SEQ_HOST
       - EMAIL_API_KEY
       - EMAIL_FROM_ADDRESS
-      - EMAIL_FROM_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_NAME
+      - RABBITMQ_USER
+      - RABBITMQ_PASSWORD
     volumes:
       - ${VOLUMES_PATH}/api/data-protection/keys:/root/.aspnet/DataProtection-Keys
       - ${VOLUMES_PATH}/api/data-protection/certificates:/app/certificates

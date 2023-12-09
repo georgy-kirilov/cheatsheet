@@ -36,7 +36,7 @@ public sealed class AccountEmailService(
 
     private async Task<string> RenderAsync(string templateName, Dictionary<string, object> parameters)
     {
-        var path = filePathResolver.ResolvePath($"Resources/{templateName}.html");
+        var path = filePathResolver.GetResourceFilePath($"{templateName}.html");
         var templateContent = await File.ReadAllTextAsync(path);
         var compiledTemplate = Handlebars.Compile(templateContent);
         var html = compiledTemplate.Invoke(parameters);

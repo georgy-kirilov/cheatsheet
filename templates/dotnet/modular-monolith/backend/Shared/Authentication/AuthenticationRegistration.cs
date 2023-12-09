@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Configuration;
 
@@ -11,14 +12,16 @@ namespace Shared.Authentication;
 
 public static class AuthenticationRegistration
 {
-    public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthentication(this IServiceCollection services,
+        IConfiguration configuration,
+        IHostEnvironment environment)
     {
         var jwtSettings = new JwtSettings
         {
-            Key = configuration.GetValueOrThrow<string>(AuthenticationConfigurationSections.JwtKey),
-            Issuer = configuration.GetValueOrThrow<string>(AuthenticationConfigurationSections.JwtIssuer),
-            Audience = configuration.GetValueOrThrow<string>(AuthenticationConfigurationSections.JwtAudience),
-            LifetimeInSeconds = configuration.GetValueOrThrow<int>(AuthenticationConfigurationSections.JwtLifetimeInSeconds)
+            Key = configuration.GetValueOrThrow<string>("JWT_KEY"),
+            Issuer = GlobalConstants.ApplicationName,
+            Audience = GlobalConstants.ApplicationName,
+            LifetimeInSeconds = environment.IsDevelopment() ? (12 * 3600) : (1 * 3600)
         };
 
         services.AddSingleton(jwtSettings);
@@ -52,13 +55,13 @@ public static class AuthenticationRegistration
     {
         app.Use(async (context, next) =>
         {
-            if (!context.Request.Headers.ContainsKey(JwtAuthConstants.Header))
+            if (!context.Request.Headers.ContainsKey(JwtConstants.Header))
             {
-                var cookie = context.Request.Cookies[JwtAuthConstants.Cookie];
+                var cookie = context.Request.Cookies[JwtConstants.Cookie];
 
                 if (cookie is not null)
                 {
-                    context.Request.Headers.Append(JwtAuthConstants.Header, $"Bearer {cookie}");
+                    context.Request.Headers.Append(JwtConstants.Header, $"Bearer {cookie}");
                 }
             }
 

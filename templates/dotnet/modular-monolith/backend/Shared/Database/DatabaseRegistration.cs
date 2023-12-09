@@ -12,15 +12,17 @@ public static class DatabaseRegistration
 {
     public static IServiceCollection AddDatabase<TContext>(this IServiceCollection services,
         IConfiguration configuration,
-        string schema,
-        string section = DatabaseConfigurationSections.DefaultConnection)
+        string schema)
         where TContext : DbContext
     {
-        var connectionString = configuration.GetValueOrThrow<string>(section);
+        var username = configuration.GetValueOrThrow<string>("DB_USER");
+        var password = configuration.GetValueOrThrow<string>("DB_PASSWORD");
+        var database = configuration.GetValueOrThrow<string>("DB_NAME");
+        var connection = $"Host=db;Username={username};Password={password};Database={database};";
 
         services.AddDbContext<TContext>(dbContextOptions =>
         {
-            dbContextOptions.UseNpgsql(connectionString, npgsqlOptions =>
+            dbContextOptions.UseNpgsql(connection, npgsqlOptions =>
             {
                 npgsqlOptions
                     .MigrationsHistoryTable(HistoryRepository.DefaultTableName, schema)

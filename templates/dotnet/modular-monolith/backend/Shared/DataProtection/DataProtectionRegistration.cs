@@ -8,23 +8,18 @@ namespace Shared.DataProtection;
 
 public static class DataProtectionRegistration
 {
-    public const string DataProtectionKeysPathInsideDocker = "/root/.aspnet/DataProtection-Keys";
-
     public static IServiceCollection AddDataProtection(this IServiceCollection services, IConfiguration configuration)
-    {
-        var certificatePath = configuration.GetValueOrThrow<string>(DataProtectionConfigurationSections.CertificatePath);
-        var certificatePassword = configuration.GetValueOrThrow<string>(DataProtectionConfigurationSections.CertificatePassword);
-        
+    {        
         var certificate = new X509Certificate2
         (
-            certificatePath,
-            certificatePassword,
+            fileName: "/app/certificates/data-protection.pfx",
+            password: configuration.GetValueOrThrow<string>("DATA_PROTECTION_CERTIFICATE_PASSWORD"),
             X509KeyStorageFlags.EphemeralKeySet
         );
 
         services
             .AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo(DataProtectionKeysPathInsideDocker))
+            .PersistKeysToFileSystem(new DirectoryInfo("/root/.aspnet/DataProtection-Keys"))
             .ProtectKeysWithCertificate(certificate);
 
         return services;

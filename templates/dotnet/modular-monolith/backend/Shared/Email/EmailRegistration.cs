@@ -12,9 +12,9 @@ public static class EmailRegistration
 
         services.AddSingleton(new EmailSettings
         {
-            ApiKey = configuration.GetValueOrThrow<string>(EmailConfigurationSections.EmailApiKey),
-            FromEmail = configuration.GetValueOrThrow<string>(EmailConfigurationSections.EmailFromAddress),
-            FromName = configuration.GetValueOrThrow<string>(EmailConfigurationSections.EmailFromName)
+            ApiKey = configuration.GetValueOrThrow<string>("EMAIL_API_KEY"),
+            FromEmail = configuration.GetValueOrThrow<string>("EMAIL_FROM_ADDRESS"),
+            FromName = GlobalConstants.ApplicationName
         });
 
         return services;

@@ -1,7 +1,8 @@
 # RabbitMQ
 
-## Open Powershell as Administrator and run the following command:
+## Open Powershell as Administrator
 
+### Run a new RabbitMQ docker container:
 ```powershell
 docker run -d `
   --restart unless-stopped `
@@ -13,10 +14,11 @@ docker run -d `
   -e RABBITMQ_DEFAULT_PASS=guest `
   -v scheck_rabbitmq_data:/var/lib/rabbitmq `
   rabbitmq:3.13.0-management
+```
 
+### After the container has been started, add a new SmartCheck RabbitMQ user:
+```powershell
 docker exec scheck_rabbitmq rabbitmqctl add_user scheck scheck
-
 docker exec scheck_rabbitmq rabbitmqctl set_permissions -p / scheck ".*" ".*" ".*"
-
 docker exec scheck_rabbitmq rabbitmqctl set_user_tags scheck administrator
 ```

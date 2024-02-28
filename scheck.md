@@ -1,9 +1,10 @@
 # RabbitMQ
 
-## Open PowerShell as Administrator
+## Open Powershell as Administrator and run the following command:
 
 ```powershell
 docker run -d `
+  --restart unless-stopped `
   --name scheck_rabbitmq `
   --hostname scheck_rabbitmq `
   -p 5672:5672 `

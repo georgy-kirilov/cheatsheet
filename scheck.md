@@ -16,7 +16,13 @@ docker run -d `
   rabbitmq:3.13.0-management
 ```
 
-### After the container has been started, add a new SmartCheck RabbitMQ user:
+### After the container has been started, enabe `Management` and `Tracing`:
+```
+docker exec smartcheck_rabbitmq rabbitmq-plugins enable rabbitmq_management
+docker exec smartcheck_rabbitmq rabbitmq-plugins enable rabbitmq_tracing
+```
+
+### Add a new `SmartCheck` RabbitMQ user:
 ```powershell
 docker exec smartcheck_rabbitmq rabbitmqctl add_user scheck scheck
 docker exec smartcheck_rabbitmq rabbitmqctl set_permissions -p / scheck ".*" ".*" ".*"

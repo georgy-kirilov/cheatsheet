@@ -28,3 +28,11 @@ docker exec smartcheck_rabbitmq rabbitmqctl add_user scheck scheck
 docker exec smartcheck_rabbitmq rabbitmqctl set_permissions -p / scheck ".*" ".*" ".*"
 docker exec smartcheck_rabbitmq rabbitmqctl set_user_tags scheck administrator
 ```
+
+### Setup tracing:
+
+1. Open `http://localhost:15672/`
+2. Login with `guest`/`guest`
+3. Go to __Admin__ tab
+4. Go to __Tracing__ (right-menu)
+5. Add new trace with name: `QA Tool`

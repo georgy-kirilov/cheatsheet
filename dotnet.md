@@ -1,4 +1,4 @@
-# DotNet
+# .NET
 
 ## Development Dockerfile
 

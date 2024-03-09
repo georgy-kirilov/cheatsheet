@@ -1,4 +1,6 @@
-# Simple Docker Container
+# RabbitMQ
+
+## Simple Docker Container
 
 ```bash
 docker run \
@@ -13,11 +15,18 @@ docker run \
   -d rabbitmq:3.13.0-management
 ```
 
-# Docker Compose Service
+## Docker Compose Service
 
-```yaml
+### `.env`
+```env
+RABBITMQ_USER=guest
+RABBITMQ_PASSWORD=guest
+```
+
+### `docker-compose.yml`
+```yml
 services:
-  example_backend_app:
+  example_app:
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -45,9 +54,4 @@ services:
 
 volumes:
   app_rabbitmq_data:
-```
-
-```env
-RABBITMQ_USER=guest
-RABBITMQ_PASSWORD=guest
 ```

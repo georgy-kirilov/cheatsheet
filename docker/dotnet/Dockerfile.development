@@ -4,10 +4,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 WORKDIR /src
 
 # Copy all source files
-COPY . .
+COPY ./MyWebApp/ ./MyWebApp
 
 # Restore dependencies
-RUN dotnet restore ./Api/Api.csproj
+RUN dotnet restore ./MyWebApp/MyWebApp.csproj
 
 # Use the same image for development
 FROM restore AS development
@@ -18,10 +18,10 @@ ENV ASPNETCORE_URLS=http://+:80
 ENV DOTNET_USE_POLLING_FILE_WATCHER=1
 
 # Set working directory
-WORKDIR /src/Api
+WORKDIR /src/MyWebApp
 
-# Install EF tool and add it to PATH
-RUN dotnet tool install --global dotnet-ef
+# Install dotnet EF tool and add it to PATH
+RUN dotnet tool install --global dotnet-ef --version 8.0.2
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 # Watch for changes and restart app

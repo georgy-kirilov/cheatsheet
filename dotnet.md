@@ -53,29 +53,35 @@ ENTRYPOINT ["dotnet", "watch", "run", "--no-restore"]
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
-
-# Set environment variables
-ENV ASPNETCORE_HTTP_PORTS=80
 ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:80
+
+# Run as a non-root user for security
+RUN useradd -m appuser
+USER appuser
 
 # Use dotnet sdk for build steps
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy all source files
-COPY ./MyWebApp/MyWebApp.csproj ./MyWebApp/
-COPY ./nuget.config ./nuget.config
+COPY ["nuget.config", "."]
+
+# Copy csproj files for all projects
+COPY ["./MyWebApp/MyWebApp.csproj", "./MyWebApp/"]
 
 # Restore
-RUN dotnet restore ./MyWebApp/MyWebApp.csproj
+RUN dotnet restore "./MyWebApp/MyWebApp.csproj"
+
+# Copy the rest of the source code
+COPY . .
 
 # Build
-WORKDIR /src/MyWebApp
+WORKDIR "/src/MyWebApp"
 RUN dotnet build "MyWebApp.csproj" -c Release -o /app/build --no-restore
 
 # Publish
 FROM build AS publish
-RUN dotnet publish "MyWebApp.csproj" -c Release -o /app/publish --no-build /p:UseAppHost=false
+RUN dotnet publish "MyWebApp.csproj" -c Release -o /app/publish --no-build
 
 # Final stage
 FROM base AS final

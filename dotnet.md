@@ -1,9 +1,19 @@
 # .NET
 
+## Nuget Config
+### `nuget.config`
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear />
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+  </packageSources>
+</configuration>
+```
+
 ## Development Dockerfile
-
 ### `Dockerfile.dev`
-
 ```dockerfile
 # Use dotnet sdk for restore steps
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
@@ -37,9 +47,7 @@ ENTRYPOINT ["dotnet", "watch", "run", "--no-restore"]
 ```
 
 ## Production Dockerfile
-
 ### `Dockerfile.prod`
-
 ```dockerfile
 # Use dotnet runtime for final image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base

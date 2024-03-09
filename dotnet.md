@@ -62,20 +62,20 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Restore dependencies
+# Copy all source files
 COPY ./MyWebApp/MyWebApp.csproj ./MyWebApp/
 COPY ./nuget.config ./nuget.config
 
+# Restore
 RUN dotnet restore ./MyWebApp/MyWebApp.csproj
 
-# Copy all files and build
-COPY . .
+# Build
 WORKDIR /src/MyWebApp
-RUN dotnet build "MyWebApp.csproj" -c Release -o /app/build
+RUN dotnet build "MyWebApp.csproj" -c Release -o /app/build --no-restore
 
 # Publish
 FROM build AS publish
-RUN dotnet publish "MyWebApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MyWebApp.csproj" -c Release -o /app/publish --no-build /p:UseAppHost=false
 
 # Final stage
 FROM base AS final

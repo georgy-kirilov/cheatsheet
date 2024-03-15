@@ -23,7 +23,7 @@ RABBITMQ_USER=guest
 RABBITMQ_PASSWORD=guest
 ```
 
-### `docker-compose.yml`
+### `compose.yml`
 ```yml
 services:
   rabbitmq:

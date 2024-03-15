@@ -22,10 +22,10 @@ services:
       - MSSQL_LOG_DIR=/var/opt/sqlserver/log
       - MSSQL_BACKUP_DIR=/var/opt/sqlserver/backup
     volumes:
-      - sqlsystem:/var/opt/mssql
-      - sqldata:/var/opt/sqlserver/data
-      - sqllog:/var/opt/sqlserver/log
-      - sqlbackup:/var/opt/sqlserver/backup
+      - sqlserver_system:/var/opt/mssql
+      - sqlserver_data:/var/opt/sqlserver/data
+      - sqlserver_log:/var/opt/sqlserver/log
+      - sqlserver_backup:/var/opt/sqlserver/backup
     healthcheck:
       test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD}", "-Q", "SELECT 1" ]
       interval: 10s
@@ -34,10 +34,10 @@ services:
       start_period: 10s
 
 volumes:
-  sqlsystem:
-  sqldata:
-  sqllog:
-  sqlbackup:
+  sqlserver_system:
+  sqlserver_data:
+  sqlserver_log:
+  sqlserver_backup:
 ```
 
 ### `.env:`

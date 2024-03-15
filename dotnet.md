@@ -21,7 +21,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 WORKDIR /src
 
 # Copy all source files
-COPY ./MyWebApp/ ./MyWebApp
+COPY ./MyWebApp/ ./MyWebApp/
 COPY ./nuget.config ./nuget.config
 
 # Restore dependencies

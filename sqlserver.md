@@ -2,7 +2,7 @@
 
 ## Docker compose service
 
-### `docker-compose.yml:`
+### `compose.yml:`
 
 ```yml
 services:

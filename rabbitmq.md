@@ -26,25 +26,25 @@ RABBITMQ_PASSWORD=guest
 ### `docker-compose.yml`
 ```yml
 services:
-  example_app:
+  app:
     depends_on:
       rabbitmq:
         condition: service_healthy
 
   rabbitmq:
     image: rabbitmq:3.13.0-management
-    container_name: app_rabbitmq
-    hostname: app_rabbitmq
+    container_name: rabbitmq
+    hostname: rabbitmq
     restart: unless-stopped
   ports:
-    - "49158:5672"
-    - "49159:15672"
+    - 49158:5672
+    - 49159:15672
   environment:
     - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
     - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management listener [{port,15672}]
   volumes:
-    - app_rabbitmq_data:/var/lib/rabbitmq
+    - rabbitmq_data:/var/lib/rabbitmq
   healthcheck:
     test: ["CMD-SHELL", "rabbitmq-diagnostics -q check_running"]
     interval: 10s
@@ -53,5 +53,5 @@ services:
     start_period: 20s
 
 volumes:
-  app_rabbitmq_data:
+  rabbitmq_data:
 ```

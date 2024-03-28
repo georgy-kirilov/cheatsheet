@@ -7,8 +7,8 @@ docker run \
   --name local_rabbitmq \
   --hostname local_rabbitmq \
   --restart unless-stopped \
-  -p 5672:5672 \
-  -p 15672:15672 \
+  -p 5673:5672 \
+  -p 15673:15672 \
   -e RABBITMQ_DEFAULT_USER=guest \
   -e RABBITMQ_DEFAULT_PASS=guest \
   -v local_rabbitmq_data:/var/lib/rabbitmq \

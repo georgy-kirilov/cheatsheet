@@ -3,7 +3,7 @@ services:
     image: postgres:16.2
     restart: unless-stopped
     ports:
-      - "5433:5432"
+      - "5444:5432"
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -22,7 +22,7 @@ services:
     image: dpage/pgadmin4:8.4
     restart: unless-stopped
     ports:
-      - "15433:80"
+      - "15444:80"
     depends_on:
       pgdb:
         condition: service_healthy
@@ -40,4 +40,6 @@ services:
 
 volumes:
   pgdb_data:
+    driver: local
   pgadmin_data:
+    driver: local

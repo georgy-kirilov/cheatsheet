@@ -1,45 +1,23 @@
 services:
   pgdb:
-    image: postgres:16.2
+    image: postgres:16.3
     restart: unless-stopped
     ports:
-      - "55432:5432"
+      - "5433:5432"
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${PGDB_USER}
+      - POSTGRES_PASSWORD=${PGDB_PASSWORD}
+      - POSTGRES_DB=${PGDB_NAME}
     volumes:
       - pgdb_data:/var/lib/postgresql/data
-      - ${DB_BACKUP_DIR}:/var/lib/postgresql/backups
+      - ${PGDB_BACKUP_DIR}:/var/lib/postgresql/backups
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -U ${PGDB_USER} -d ${PGDB_NAME} || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
 
-  pgadmin:
-    image: dpage/pgadmin4:8.6
-    restart: unless-stopped
-    ports:
-      - "55433:80"
-    depends_on:
-      pgdb:
-        condition: service_healthy
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-
 volumes:
   pgdb_data:
-    driver: local
-  pgadmin_data:
     driver: local

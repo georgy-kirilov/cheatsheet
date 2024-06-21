@@ -1,5 +1,11 @@
 # Uncomplicated Firewall
 
+0. Create a new linux VM and SSH into it:
+
+```bash
+ssh root@<vm-ip-address>
+```
+
 1. **Install UFW**:
 ```bash
 sudo apt update

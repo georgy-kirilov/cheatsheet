@@ -1,14 +1,15 @@
 ### Create new dotnet API project
 
 ```powershell
-mkdir MyWebApp
-cd ./MyWebApp
-dotnet new sln -n MyWebApp
-dotnet new web -n Api
-dotnet sln add Api
-dotnet new gitignore
-dotnet new nuget.config
-echo "" >> .env.example
+mkdir MyWebApp `
+cd ./MyWebApp `
+echo "" >> .env.example `
+dotnet new web -n Api `
+cd ./Api `
+dotnet new sln -n MyWebApp `
+dotnet sln add Api `
+dotnet new gitignore `
+dotnet new nuget.config `
 ```
 
 ### Remove `launchSettings.json` file

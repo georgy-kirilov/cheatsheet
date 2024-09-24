@@ -4,7 +4,7 @@ services:
       dockerfile: Api/Dockerfile.dev
     restart: on-failure
     volumes:
-      - ./backend/Api:/src/Api:delegated
+      - ./Api:/src/Api:delegated
       - api_obj:/src/Api/obj
       - api_bin:/src/Api/bin
 

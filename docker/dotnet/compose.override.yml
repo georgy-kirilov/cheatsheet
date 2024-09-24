@@ -5,5 +5,9 @@ services:
     restart: on-failure
     volumes:
       - ./backend/Api:/src/Api:delegated
-      - /src/Api/obj
-      - /src/Api/bin
+      - api_obj:/src/Api/obj
+      - api_bin:/src/Api/bin
+
+volumes:
+  api_obj:
+  api_bin:

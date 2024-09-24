@@ -32,5 +32,8 @@ ENV ASPNETCORE_URLS=http://+:80
 # Set working directory
 WORKDIR /src/Api
 
+# Build the app in Debug mode
+RUN dotnet build "Api.csproj" --configuration Debug
+
 # Run the application
-ENTRYPOINT ["dotnet", "run", "--no-restore"]
+ENTRYPOINT ["dotnet", "run", "--no-restore", "--configuration", "Debug"]

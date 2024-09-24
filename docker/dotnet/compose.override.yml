@@ -1,7 +1,7 @@
 services:
   api:
     build:
-      dockerfile: Api/Dockerfile.development
+      dockerfile: Api/Dockerfile.dev
     restart: on-failure
     volumes:
       - ./backend/Api:/src/Api:delegated

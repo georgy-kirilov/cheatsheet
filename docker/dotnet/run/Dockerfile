@@ -32,5 +32,8 @@ ENV ASPNETCORE_URLS=http://+:80
 # Set working directory
 WORKDIR /src/Api
 
-# Run the application normally (without hot reload)
-ENTRYPOINT ["dotnet", "run", "--no-restore"]
+# Build the app in Debug mode
+RUN dotnet build --configuration Debug
+
+# Run the application
+ENTRYPOINT ["dotnet", "run", "--no-restore", "--configuration", "Debug"]

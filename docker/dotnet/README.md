@@ -1,3 +1,13 @@
+### Create new dotnet API project
+
+```powershell
+mkdir MyWebApp
+cd ./MyWebApp
+dotnet new sln -n MyWebApp
+dotnet new web -n Api
+dotnet sln add Api
+```
+
 ### Remove `launchSettings.json` file
 ```csproj
 <Project Sdk="Microsoft.NET.Sdk.Web">

@@ -7,6 +7,8 @@ dotnet new sln -n MyWebApp
 dotnet new web -n Api
 dotnet sln add Api
 dotnet new gitignore
+dotnet new nuget.config
+echo "" >> .env.example
 ```
 
 ### Remove `launchSettings.json` file

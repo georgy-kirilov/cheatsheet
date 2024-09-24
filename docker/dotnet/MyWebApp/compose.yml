@@ -1,0 +1,8 @@
+services:
+  api:
+    build:
+      context: ./Api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 5050:80

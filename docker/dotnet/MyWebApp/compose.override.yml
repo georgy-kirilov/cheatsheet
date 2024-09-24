@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+    restart: on-failure
+    volumes:
+      - ./Api:/src/Api:delegated
+      - api_obj:/src/Api/obj
+      - api_bin:/src/Api/bin
+
+volumes:
+  api_obj:
+  api_bin:

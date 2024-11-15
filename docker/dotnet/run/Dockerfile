@@ -1,39 +1,19 @@
-# Use dotnet sdk for restore steps
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
-
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 WORKDIR /src
+EXPOSE 8080
 
-# Copy only .csproj and nuget.config files to optimize docker layer caching
-COPY ./Api/Api.csproj ./Api/
-COPY ./Api/nuget.config ./Api/
-
-# Restore dependencies
-RUN dotnet restore ./Api/Api.csproj
-
-# Copy all remaining source files
-COPY ./Api/ ./Api/
-
-# Install dotnet EF tool and add it to PATH
-RUN dotnet tool install --global dotnet-ef --version 8.0.8
-ENV PATH="${PATH}:/root/.dotnet/tools"
-
-# Use the same image for development
-FROM restore AS development
-
-# Explicitly unset HTTP_PORTS to avoid overrides
-ENV HTTP_PORTS=
-
-# Set the environment to Development
 ENV ASPNETCORE_ENVIRONMENT=Development
 
-# Bind the app to port 80
-ENV ASPNETCORE_URLS=http://+:80
+COPY ["Application/Application.csproj", "Application/"]
+COPY ["nuget.config", "Application/"]
+RUN dotnet restore "Application/Application.csproj"
+COPY . .
 
-# Set working directory
-WORKDIR /src/Api
+RUN dotnet tool install --global dotnet-ef --version 9.0.0
+ENV PATH="${PATH}:/root/.dotnet/tools"
 
-# Build the app in Debug mode
-RUN dotnet build --configuration Debug
+FROM restore AS development
+WORKDIR "/src/Application"
+RUN dotnet build "Application.csproj" --no-restore -c Debug
 
-# Run the application
-ENTRYPOINT ["dotnet", "run", "--no-restore", "--configuration", "Debug"]
+ENTRYPOINT ["dotnet", "run", "--no-restore", "-c", "Debug"]

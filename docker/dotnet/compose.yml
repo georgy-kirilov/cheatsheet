@@ -1,8 +1,8 @@
 services:
-  api:
+  application:
     build:
       context: .
-      dockerfile: Api/Dockerfile
+      dockerfile: Application/Dockerfile
     restart: unless-stopped
     ports:
-      - 5050:80
+      - 5000:8080
